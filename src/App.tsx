@@ -45,7 +45,7 @@ function App() {
 
   const langs = Object.keys(specs).map((l) => <option key={l}>{l}</option>);
   return (
-    <div>
+    <div className="container">
       <div className="app-container">
         <div className="controls">
           <select
@@ -66,9 +66,9 @@ function App() {
           onChange={(v) => setCode(v!)}
         ></Editor>
         {isExecuting && <Spinner />}
-        <ResultViewer res={execRes}></ResultViewer>
+        <ResultViewer res={execRes} />
       </div>
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 }
