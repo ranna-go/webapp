@@ -1,0 +1,17 @@
+@keyframes spinneranim {
+    0% { width: 0%; margin-left: 0%; }
+    50% { width: 100%; margin-left: 0%; }
+    100% { width: 0%; margin-left: 100%; }
+}
+
+.spinner {
+    width: 100%;
+    height: 10px;
+
+    > div {
+        height: 100%;
+        width: 0%;
+        background-color: #03A9F4;
+        animation: spinneranim 1.5s ease infinite;
+    }
+}

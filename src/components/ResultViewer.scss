@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+
+.result-viewer {
+    font-family: 'Source Code Pro', monospace;
+    
+    > div {
+        padding: 10px;
+        background-color: #263238;
+    }
+
+    .heading {
+        font-size: 0.8em;
+        color: #90A4AE;
+        margin-bottom: 5px;
+    }
+
+    .stderr {
+        color: #f44336;
+    }
+}
