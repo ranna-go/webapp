@@ -1,12 +1,10 @@
 import Editor from '@monaco-editor/react';
 import { ExecutionResponse, SpecMap, StringMap } from '@ranna-go/ranna-ts';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import './App.scss';
-import Footer from './components/Footer';
 import Header from './components/header/Header';
 import ResultViewer from './components/result-viewer/ResultViewer';
-import Spinner from './components/Spinner';
 import client from './services/client';
 
 const langMap: StringMap = {
