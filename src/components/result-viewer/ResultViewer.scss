@@ -2,6 +2,13 @@
 
 .result-viewer {
     font-family: 'Source Code Pro', monospace;
+    z-index: 10;
+    width: 100%;
+    max-height: 50vh;
+    overflow-y: auto;
+    bottom: 0;
+    position: absolute;
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.2);
     
     > div {
         padding: 10px;
