@@ -49,7 +49,7 @@ function App() {
         execDisabled={!code}
       />
       <Editor
-        height="calc(100% - 105px)"
+        height="calc(100vh - 105px)"
         language={mapLang(selectedLang)}
         theme="vs-dark"
         onChange={(v) => setCode(v!)}
