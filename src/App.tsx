@@ -27,18 +27,20 @@ function App() {
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarContent, setSnackbarContent] = useState<JSX.Element>();
 
-  var snippetIdent = new URLSearchParams(window.location.search).get('s');
+  const snippetIdent = useRef<string | null>();
   const originalSnippetCode = useRef<string>();
 
   useEffect(() => {
+    snippetIdent.current = new URLSearchParams(window.location.search).get('s');
+
     client.spec().then((res) => {
       setSpecs(res);
       setSelectedLang(Object.keys(res)[0]);
     });
 
-    if (snippetIdent) {
+    if (snippetIdent.current) {
       snippets
-        .get(snippetIdent)
+        .get(snippetIdent.current)
         .then((snippet) => {
           setSelectedLang(snippet.language);
           setCode(snippet.code);
@@ -64,15 +66,15 @@ function App() {
     if (code && selectedLang) {
       try {
         if (
-          !snippetIdent ||
+          !snippetIdent.current ||
           code.trim() !== originalSnippetCode.current?.trim()
         ) {
           const snippet = await snippets.create({
             code: code,
             language: selectedLang,
           } as Snippet);
-          snippetIdent = snippet.ident;
-          window.history.pushState('', '', '/?s=' + snippetIdent);
+          snippetIdent.current = snippet.ident;
+          window.history.pushState('', '', '/?s=' + snippetIdent.current);
         }
 
         setSnackbarContent(
@@ -82,7 +84,7 @@ function App() {
             <input
               className="share-input"
               readOnly
-              value={window.location.origin + '?s=' + snippetIdent}
+              value={window.location.origin + '?s=' + snippetIdent.current}
               onFocus={(e) => e.target.select()}
             />
           </div>
