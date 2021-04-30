@@ -1,6 +1,5 @@
 import Editor from '@monaco-editor/react';
 import {
-  APIError,
   ExecutionResponse,
   Snippet,
   SpecMap,
