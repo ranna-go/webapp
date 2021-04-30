@@ -1,11 +1,12 @@
 import Editor from '@monaco-editor/react';
 import {
+  APIError,
   ExecutionResponse,
   Snippet,
   SpecMap,
   StringMap,
 } from '@ranna-go/ranna-ts';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import './App.scss';
 import Header from './components/header/Header';
@@ -28,7 +29,7 @@ function App() {
   const [snackbarContent, setSnackbarContent] = useState<JSX.Element>();
 
   var snippetIdent = new URLSearchParams(window.location.search).get('s');
-  var originalSnippetCode: string;
+  const originalSnippetCode = useRef<string>();
 
   useEffect(() => {
     client.spec().then((res) => {
@@ -42,7 +43,7 @@ function App() {
         .then((snippet) => {
           setSelectedLang(snippet.language);
           setCode(snippet.code);
-          originalSnippetCode = snippet.code;
+          originalSnippetCode.current = snippet.code;
         })
         .catch();
     }
@@ -63,7 +64,10 @@ function App() {
   async function share() {
     if (code && selectedLang) {
       try {
-        if (!snippetIdent || code.trim() !== originalSnippetCode?.trim()) {
+        if (
+          !snippetIdent ||
+          code.trim() !== originalSnippetCode.current?.trim()
+        ) {
           const snippet = await snippets.create({
             code: code,
             language: selectedLang,
