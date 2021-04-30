@@ -4,10 +4,12 @@ import './Header.scss';
 interface HeaderProperties {
   languages: string[];
   selectedLanguage: string;
+  isExecuting?: boolean;
+  disabled?: boolean;
+
   onLanguageSelect?: (v: string) => void;
   onExecute?: () => void;
-  isExecuting?: boolean;
-  execDisabled?: boolean;
+  onShare?: () => void;
 }
 
 export default function Header(props: HeaderProperties) {
@@ -16,10 +18,10 @@ export default function Header(props: HeaderProperties) {
     <div className="header">
       <button
         className="execute"
-        disabled={props.execDisabled}
+        disabled={props.disabled}
         onClick={() => props.onExecute?.call(null)}
       >
-        {props.isExecuting ? <Spinner /> : <span>execute</span>}
+        {props.isExecuting ? <Spinner /> : <span>▶ execute</span>}
       </button>
       <select
         value={props.selectedLanguage}
@@ -27,6 +29,13 @@ export default function Header(props: HeaderProperties) {
       >
         {options}
       </select>
+      <button
+        className="share"
+        disabled={props.disabled}
+        onClick={() => props.onShare?.call(null)}
+      >
+        🔗 share snippet
+      </button>
     </div>
   );
 }
