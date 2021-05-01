@@ -6,6 +6,7 @@ import {
   SpecMap,
   StringMap,
 } from '@ranna-go/ranna-ts';
+import { SystemInfo } from '@ranna-go/ranna-ts/dist/models';
 import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import './App.scss';
@@ -24,7 +25,9 @@ function App() {
   const [selectedLang, setSelectedLang] = useState('');
   const [code, setCode] = useState('');
   const [execRes, setExecRes] = useState({} as ExecutionResponse);
+  const [info, setInfo] = useState({} as SystemInfo);
   const [isExecuting, setIsExecuting] = useState(false);
+
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarContent, setSnackbarContent] = useState<JSX.Element>();
   const [snackbarColor, setSnackbarColor] = useState<string | undefined>(
@@ -37,10 +40,13 @@ function App() {
   useEffect(() => {
     snippetIdent.current = new URLSearchParams(window.location.search).get('s');
 
-    client.spec().then((res) => {
-      setSpecs(res);
-      setSelectedLang(Object.keys(res)[0]);
-    });
+    client
+      .spec()
+      .then((res) => {
+        setSpecs(res);
+        setSelectedLang(Object.keys(res)[0]);
+      })
+      .catch();
 
     if (snippetIdent.current) {
       snippets
@@ -52,6 +58,11 @@ function App() {
         })
         .catch();
     }
+
+    client
+      .info()
+      .then((res) => setInfo(res))
+      .catch();
   }, []);
 
   async function run() {
@@ -127,6 +138,7 @@ function App() {
         {snackbarContent}
       </Snackbar>
       <Header
+        info={info}
         languages={Object.keys(specs) ?? []}
         selectedLanguage={selectedLang}
         isExecuting={isExecuting}
