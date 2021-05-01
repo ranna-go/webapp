@@ -1,5 +1,6 @@
 import Editor from '@monaco-editor/react';
 import {
+  APIError,
   ExecutionResponse,
   Snippet,
   SpecMap,
@@ -26,6 +27,9 @@ function App() {
   const [isExecuting, setIsExecuting] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarContent, setSnackbarContent] = useState<JSX.Element>();
+  const [snackbarColor, setSnackbarColor] = useState<string | undefined>(
+    undefined
+  );
 
   const snippetIdent = useRef<string | null>();
   const originalSnippetCode = useRef<string>();
@@ -57,7 +61,9 @@ function App() {
       try {
         const res = await client.exec({ language: selectedLang, code: code });
         setExecRes(res);
-      } catch {}
+      } catch (err) {
+        onError(err);
+      }
       setIsExecuting(false);
     }
   }
@@ -77,6 +83,7 @@ function App() {
           window.history.pushState('', '', '/?s=' + snippetIdent.current);
         }
 
+        setSnackbarColor(undefined);
         setSnackbarContent(
           <div>
             <span>You can share the snippet using this link.</span>
@@ -90,13 +97,33 @@ function App() {
           </div>
         );
         setShowSnackbar(true);
-      } catch {}
+      } catch (err) {
+        onError(err);
+      }
     }
+  }
+
+  function onError(err: Error) {
+    console.log(err);
+    if (
+      (err instanceof APIError && err.code === 429) ||
+      err.message === 'Failed to fetch'
+    ) {
+      err.message = 'You need to wait until you can perform this action again.';
+    }
+    setSnackbarColor('#f44336');
+    setSnackbarContent(<span>{err.message}</span>);
+    setShowSnackbar(true);
+    setTimeout(() => setShowSnackbar(false), 4000);
   }
 
   return (
     <div className="container">
-      <Snackbar show={showSnackbar} onHide={() => setShowSnackbar(false)}>
+      <Snackbar
+        show={showSnackbar}
+        color={snackbarColor}
+        onHide={() => setShowSnackbar(false)}
+      >
         {snackbarContent}
       </Snackbar>
       <Header
