@@ -19,15 +19,22 @@
         display: flex;
         align-items: center;
         position: relative;
-
+        
         &:hover .logo-info-container {
-            display: block;
+            pointer-events: all;
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0px);
         }
-
+        
         .logo-info-container {
+            transition: all .2s ease;
             position: absolute;
             top: 10px;
-            display: none;
+            pointer-events: none;
+            opacity: 0;
+            transform: scale(1.02);
+            filter: blur(5px);
             .spacer {
                 height: 50px;
                 background-color: transparent;
