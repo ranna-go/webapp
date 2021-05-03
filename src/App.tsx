@@ -70,7 +70,10 @@ function App() {
       setIsExecuting(true);
       setExecRes({} as ExecutionResponse);
       try {
-        const res = await client.exec({ language: selectedLang, code: code });
+        const res = await client.exec({
+          language: selectedLang,
+          code: code.replaceAll('\r\n', '\n'),
+        });
         setExecRes(res);
       } catch (err) {
         onError(err);
@@ -87,7 +90,7 @@ function App() {
           code.trim() !== originalSnippetCode.current?.trim()
         ) {
           const snippet = await snippets.create({
-            code: code,
+            code: code.replaceAll('\r\n', '\n'),
             language: selectedLang,
           } as Snippet);
           snippetIdent.current = snippet.ident;
