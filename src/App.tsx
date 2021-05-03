@@ -14,6 +14,8 @@ import Header from './components/header/Header';
 import ResultViewer from './components/result-viewer/ResultViewer';
 import Snackbar from './components/snackbar/Snackbar';
 import { client, snippets } from './services/client';
+import LocalStorageUtil from './util/localstorage';
+import InputTimeout from './util/timeoutinput';
 
 const langMap: StringMap = {
   'python3': 'python',
@@ -36,16 +38,14 @@ function App() {
 
   const snippetIdent = useRef<string | null>();
   const originalSnippetCode = useRef<string>();
+  const codeInputTimeout = useRef(new InputTimeout(1000));
 
   useEffect(() => {
     snippetIdent.current = new URLSearchParams(window.location.search).get('s');
 
     client
       .spec()
-      .then((res) => {
-        setSpecs(res);
-        setSelectedLang(Object.keys(res)[0]);
-      })
+      .then((res) => setSpecs(res))
       .catch();
 
     if (snippetIdent.current) {
@@ -57,6 +57,11 @@ function App() {
           originalSnippetCode.current = snippet.code;
         })
         .catch();
+    } else {
+      const lastLang = LocalStorageUtil.get<string>('last.language');
+      if (lastLang) setSelectedLang(lastLang);
+      const lastCode = LocalStorageUtil.get<string>('last.code');
+      if (lastCode) setCode(lastCode);
     }
 
     client
@@ -131,6 +136,16 @@ function App() {
     setTimeout(() => setShowSnackbar(false), 4000);
   }
 
+  function setSelectedLangWrapper(v: string) {
+    setSelectedLang(v);
+    LocalStorageUtil.set('last.language', v);
+  }
+
+  function setCodeWrapper(v: string) {
+    setCode(v);
+    codeInputTimeout.current.do(() => LocalStorageUtil.set('last.code', v));
+  }
+
   return (
     <div className="container">
       <Snackbar
@@ -146,7 +161,7 @@ function App() {
         selectedLanguage={selectedLang}
         isExecuting={isExecuting}
         disabled={!code}
-        onLanguageSelect={(v) => setSelectedLang(v)}
+        onLanguageSelect={(v) => setSelectedLangWrapper(v)}
         onExecute={() => run()}
         onShare={() => share()}
       />
@@ -155,7 +170,7 @@ function App() {
         language={mapLang(selectedLang)}
         theme="vs-dark"
         value={code}
-        onChange={(v) => setCode(v!)}
+        onChange={(v) => setCodeWrapper(v!)}
         wrapperClassName="code-editor"
       ></Editor>
       <ResultViewer res={execRes} />
