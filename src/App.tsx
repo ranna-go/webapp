@@ -151,7 +151,7 @@ function App() {
         onShare={() => share()}
       />
       <Editor
-        height="calc(100vh - 105px)"
+        height="calc(100vh - 85px)"
         language={mapLang(selectedLang)}
         theme="vs-dark"
         value={code}

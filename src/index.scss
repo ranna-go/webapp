@@ -4,7 +4,10 @@
   box-sizing: border-box;
 }
 
-body, button, input, select {
+body,
+button,
+input,
+select {
   font-family: 'Poppins', sans-serif;
 }
 
@@ -15,8 +18,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  color: #FAFAFA;
-  background-color: #212121;
+  color: #fafafa;
+  background-color: #1e1e1e;
 }
 
 code {
@@ -24,7 +27,8 @@ code {
     monospace;
 }
 
-select, input {
+select,
+input {
   color: white;
   background-color: #263238;
   padding: 6px 12px;
@@ -34,12 +38,12 @@ select, input {
 }
 
 a {
-  color: #03A9F4;
+  color: #03a9f4;
 }
 
 button {
-  background-color: #455A64;
-  color: #FAFAFA;
+  background-color: #455a64;
+  color: #fafafa;
   border: none;
   padding: 6px 12px;
   font-size: 16px;
@@ -47,8 +51,8 @@ button {
   cursor: pointer;
   border-radius: 3px;
 
-  transition: all .15s ease;
-  
+  transition: all 0.15s ease;
+
   &:hover {
     background-color: #00acd7;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.25);
