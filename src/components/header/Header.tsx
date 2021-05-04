@@ -43,7 +43,8 @@ export default function Header(props: HeaderProperties) {
         disabled={props.disabled}
         onClick={() => props.onShare?.call(null)}
       >
-        🔗 share snippet
+        🔗
+        <span className="hide-mobile">&nbsp;share snippet</span>
       </button>
     </div>
   );

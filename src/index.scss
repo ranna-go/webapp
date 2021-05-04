@@ -42,6 +42,7 @@ a {
 }
 
 button {
+  display: flex;
   background-color: #455a64;
   color: #fafafa;
   border: none;
@@ -62,5 +63,12 @@ button {
     opacity: 0.3;
     box-shadow: none;
     cursor: not-allowed;
+  }
+}
+
+.hide-mobile {
+  display: flex;
+  @media screen and (max-width: 800px) {
+    display: none;
   }
 }

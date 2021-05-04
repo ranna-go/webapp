@@ -15,7 +15,16 @@ export default function ExecButton(props: ExecButtonProperties) {
       disabled={props.disabled}
       onClick={() => props.onExecute?.call(null)}
     >
-      {props.isExecuting ? <Spinner /> : <span>▶ execute</span>}
+      {props.isExecuting ? (
+        <Spinner />
+      ) : (
+        [
+          <span>▶</span>,
+          <span className={props.floating ? '' : 'hide-mobile'}>
+            &nbsp;execute
+          </span>,
+        ]
+      )}
     </button>
   );
 }

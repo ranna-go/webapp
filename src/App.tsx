@@ -125,7 +125,6 @@ function App() {
   }
 
   function onError(err: Error) {
-    console.log(err);
     if (
       (err instanceof APIError && err.code === 429) ||
       err.message === 'Failed to fetch'
@@ -148,7 +147,6 @@ function App() {
     codeInputTimeout.current.do(() => LocalStorageUtil.set('last.code', v));
   }
 
-  console.log(isEmbed.current);
   return (
     <div className="container">
       <Snackbar
