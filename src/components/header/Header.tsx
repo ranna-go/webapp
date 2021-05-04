@@ -3,6 +3,7 @@ import Spinner from '../spinner/Spinner';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 import Info from '../info/Info';
 import { SystemInfo } from '@ranna-go/ranna-ts/dist/models';
+import ExecButton from '../exec-button/ExecButton';
 
 interface HeaderProperties {
   info: SystemInfo;
@@ -27,13 +28,11 @@ export default function Header(props: HeaderProperties) {
           <Info info={props.info} />
         </div>
       </div>
-      <button
-        className="execute"
+      <ExecButton
         disabled={props.disabled}
-        onClick={() => props.onExecute?.call(null)}
-      >
-        {props.isExecuting ? <Spinner /> : <span>▶ execute</span>}
-      </button>
+        isExecuting={props.isExecuting}
+        onExecute={props.onExecute}
+      />
       <select
         value={props.selectedLanguage}
         onChange={(e) => props.onLanguageSelect?.call(null, e.target.value)}

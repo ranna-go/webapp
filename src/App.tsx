@@ -10,6 +10,7 @@ import { SystemInfo } from '@ranna-go/ranna-ts/dist/models';
 import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import './App.scss';
+import ExecButton from './components/exec-button/ExecButton';
 import Header from './components/header/Header';
 import ResultViewer from './components/result-viewer/ResultViewer';
 import Snackbar from './components/snackbar/Snackbar';
@@ -36,6 +37,7 @@ function App() {
     undefined
   );
 
+  const isEmbed = useRef<boolean>(window.self !== window.top);
   const snippetIdent = useRef<string | null>();
   const originalSnippetCode = useRef<string>();
   const codeInputTimeout = useRef(new InputTimeout(1000));
@@ -146,6 +148,7 @@ function App() {
     codeInputTimeout.current.do(() => LocalStorageUtil.set('last.code', v));
   }
 
+  console.log(isEmbed.current);
   return (
     <div className="container">
       <Snackbar
@@ -155,23 +158,33 @@ function App() {
       >
         {snackbarContent}
       </Snackbar>
-      <Header
-        info={info}
-        languages={Object.keys(specs) ?? []}
-        selectedLanguage={selectedLang}
-        isExecuting={isExecuting}
-        disabled={!code}
-        onLanguageSelect={(v) => setSelectedLangWrapper(v)}
-        onExecute={() => run()}
-        onShare={() => share()}
-      />
+      {isEmbed.current && (
+        <ExecButton
+          isExecuting={isExecuting}
+          onExecute={() => run()}
+          floating
+        />
+      )}
+      {!isEmbed.current && (
+        <Header
+          info={info}
+          languages={Object.keys(specs) ?? []}
+          selectedLanguage={selectedLang}
+          isExecuting={isExecuting}
+          disabled={!code}
+          onLanguageSelect={(v) => setSelectedLangWrapper(v)}
+          onExecute={() => run()}
+          onShare={() => share()}
+        />
+      )}
       <Editor
-        height="calc(100vh - 85px)"
+        height={`calc(100vh - ${isEmbed.current ? 24 : 81}px)`}
         language={mapLang(selectedLang)}
         theme="vs-dark"
         value={code}
         onChange={(v) => setCodeWrapper(v!)}
         wrapperClassName="code-editor"
+        options={{ readOnly: isEmbed.current }}
       ></Editor>
       <ResultViewer res={execRes} />
     </div>
