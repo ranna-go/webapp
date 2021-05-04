@@ -1,5 +1,4 @@
 import './Header.scss';
-import Spinner from '../spinner/Spinner';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 import Info from '../info/Info';
 import { SystemInfo } from '@ranna-go/ranna-ts/dist/models';
