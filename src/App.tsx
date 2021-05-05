@@ -41,7 +41,6 @@ function App() {
   const snippetIdent = useRef<string | null>();
   const originalSnippetCode = useRef<string>();
   const codeInputTimeout = useRef(new InputTimeout(1000));
-  const providedByTag = useRef();
 
   useEffect(() => {
     snippetIdent.current = new URLSearchParams(window.location.search).get('s');
