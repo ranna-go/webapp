@@ -41,6 +41,7 @@ function App() {
   const snippetIdent = useRef<string | null>();
   const originalSnippetCode = useRef<string>();
   const codeInputTimeout = useRef(new InputTimeout(1000));
+  const providedByTag = useRef();
 
   useEffect(() => {
     snippetIdent.current = new URLSearchParams(window.location.search).get('s');
@@ -182,9 +183,21 @@ function App() {
         value={code}
         onChange={(v) => setCodeWrapper(v!)}
         wrapperClassName="code-editor"
-        options={{ readOnly: isEmbed.current }}
+        options={{
+          readOnly: isEmbed.current,
+          minimap: { enabled: false },
+        }}
       ></Editor>
       <ResultViewer res={execRes} />
+      {isEmbed.current && (
+        <a
+          className="embed-footer"
+          href={window.location.toString()}
+          target="_blank"
+        >
+          <span>Provided with ♥ by ranna</span>
+        </a>
+      )}
     </div>
   );
 }
