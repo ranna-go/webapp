@@ -193,6 +193,7 @@ function App() {
           className="embed-footer"
           href={window.location.toString()}
           target="_blank"
+          rel="noreferrer"
         >
           <span>Provided with ♥ by ranna</span>
         </a>
