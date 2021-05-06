@@ -19,8 +19,8 @@ export default function ExecButton(props: ExecButtonProperties) {
         <Spinner />
       ) : (
         [
-          <span>▶</span>,
-          <span className={props.floating ? '' : 'hide-mobile'}>
+          <span key="icon">▶</span>,
+          <span key="text" className={props.floating ? '' : 'hide-mobile'}>
             &nbsp;execute
           </span>,
         ]

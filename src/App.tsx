@@ -147,6 +147,7 @@ function App() {
     codeInputTimeout.current.do(() => LocalStorageUtil.set('last.code', v));
   }
 
+  console.log(document.getElementById('result-viewer')?.clientHeight);
   return (
     <div className="container">
       <Snackbar

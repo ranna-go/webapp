@@ -7,7 +7,7 @@ interface ResultViewerProps {
 
 function ResultViewer(props: ResultViewerProps) {
   return (
-    <div className="result-viewer">
+    <div id="result-viewer" className="result-viewer">
       {props.res.stdout && (
         <div>
           <div className="heading">stdout</div>
@@ -26,13 +26,13 @@ function ResultViewer(props: ResultViewerProps) {
 
 function linebreak(s: string): JSX.Element[] {
   const split = s.trim().split('\n');
-  const res = split.slice(0, split.length - 1).map((l) => (
-    <span>
+  const res = split.slice(0, split.length - 1).map((l, i) => (
+    <span key={'line-' + i}>
       {l}
       <br />
     </span>
   ));
-  res.push(<span>{split[split.length - 1]}</span>);
+  res.push(<span key="line-end">{split[split.length - 1]}</span>);
   return res;
 }
 
