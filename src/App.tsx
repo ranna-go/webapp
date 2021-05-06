@@ -41,6 +41,7 @@ function App() {
   const snippetIdent = useRef<string | null>();
   const originalSnippetCode = useRef<string>();
   const codeInputTimeout = useRef(new InputTimeout(1000));
+  const resultViewerHeight = useRef(0);
 
   useEffect(() => {
     snippetIdent.current = new URLSearchParams(window.location.search).get('s');
@@ -147,7 +148,8 @@ function App() {
     codeInputTimeout.current.do(() => LocalStorageUtil.set('last.code', v));
   }
 
-  console.log(document.getElementById('result-viewer')?.clientHeight);
+  resultViewerHeight.current =
+    document.getElementById('result-viewer')?.clientHeight ?? 0;
   return (
     <div className="container">
       <Snackbar
@@ -195,6 +197,7 @@ function App() {
           href={window.location.toString()}
           target="_blank"
           rel="noreferrer"
+          style={{ bottom: resultViewerHeight.current + 15 }}
         >
           <span>Provided with ♥ by ranna</span>
         </a>
