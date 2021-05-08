@@ -4,6 +4,7 @@ import { SystemInfo } from '@ranna-go/ranna-ts/dist/models';
 
 interface InfoProperties {
   info: SystemInfo;
+  onReset?: () => void;
 }
 
 export default function Info(props: InfoProperties) {
@@ -40,6 +41,13 @@ export default function Info(props: InfoProperties) {
           </tr>
         </tbody>
       </table>
+      <button
+        className="btn-reset-store"
+        title="Resets stored code and language selected on start."
+        onClick={() => props.onReset?.call(null)}
+      >
+        Reset Store
+      </button>
       <p className="mt">© 2021 zekro Development</p>
       <a href="https://github.com/ranna-go/ranna">GitHub</a> |{' '}
       <a href="https://zekro.de/imprint">Imprint</a>

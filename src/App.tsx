@@ -17,6 +17,7 @@ import Snackbar from './components/snackbar/Snackbar';
 import { client, snippets } from './services/client';
 import LocalStorageUtil from './util/localstorage';
 import InputTimeout from './util/timeoutinput';
+import WindowKeyHookBuilder from './util/windowkeyhooker';
 
 const langMap: StringMap = {
   'python3': 'python',
@@ -42,6 +43,11 @@ function App() {
   const originalSnippetCode = useRef<string>();
   const codeInputTimeout = useRef(new InputTimeout(1000));
   const resultViewerHeight = useRef(0);
+
+  window.onkeypress = new WindowKeyHookBuilder()
+    .on('shift+enter', () => run())
+    .on('alt+shift+r', () => resetStroe())
+    .build();
 
   useEffect(() => {
     snippetIdent.current = new URLSearchParams(window.location.search).get('s');
@@ -148,6 +154,12 @@ function App() {
     codeInputTimeout.current.do(() => LocalStorageUtil.set('last.code', v));
   }
 
+  function resetStroe() {
+    setCode('');
+    LocalStorageUtil.del('last.language');
+    LocalStorageUtil.del('last.code');
+  }
+
   resultViewerHeight.current =
     document.getElementById('result-viewer')?.clientHeight ?? 0;
   return (
@@ -176,6 +188,7 @@ function App() {
           onLanguageSelect={(v) => setSelectedLangWrapper(v)}
           onExecute={() => run()}
           onShare={() => share()}
+          onReset={() => resetStroe()}
         />
       )}
       <Editor

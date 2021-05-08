@@ -8,4 +8,8 @@ export default class LocalStorageUtil {
     if (valStr) return JSON.parse(valStr);
     return def;
   }
+
+  public static del(key: string) {
+    window.localStorage.removeItem(key);
+  }
 }

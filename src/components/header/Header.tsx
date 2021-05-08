@@ -14,6 +14,7 @@ interface HeaderProperties {
   onLanguageSelect?: (v: string) => void;
   onExecute?: () => void;
   onShare?: () => void;
+  onReset?: () => void;
 }
 
 export default function Header(props: HeaderProperties) {
@@ -24,7 +25,7 @@ export default function Header(props: HeaderProperties) {
         <Logo />
         <div className="logo-info-container">
           <div className="spacer"></div>
-          <Info info={props.info} />
+          <Info info={props.info} onReset={props.onReset} />
         </div>
       </div>
       <ExecButton
