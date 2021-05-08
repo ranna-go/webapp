@@ -3,8 +3,6 @@ export type Handler = (e: KeyboardEvent) => void;
 export default class WindowKeyHookBuilder {
   private handlers: { [key: string]: Handler } = {};
 
-  constructor() {}
-
   public on(keys: string, handler: Handler) {
     this.handlers[keys.toLowerCase()] = handler;
     return this;

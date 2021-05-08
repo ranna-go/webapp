@@ -49,7 +49,7 @@ export default function Info(props: InfoProperties) {
         Reset Store
       </button>
       <p className="mt">© 2021 zekro Development</p>
-      <a href="https://github.com/ranna-go/ranna">GitHub</a> |{' '}
+      <a href="https://github.com/ranna-go">GitHub</a> |{' '}
       <a href="https://zekro.de/imprint">Imprint</a>
     </div>
   );
