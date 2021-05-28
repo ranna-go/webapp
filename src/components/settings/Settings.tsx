@@ -28,7 +28,6 @@ export default function Settings() {
       .map((l) => l.split('='))
       .filter((s) => s.length > 1)
       .forEach((s) => (m[s[0]] = s[1]));
-    console.log(m);
     setEnv(m);
   }
 
