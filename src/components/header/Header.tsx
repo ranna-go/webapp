@@ -4,6 +4,7 @@ import Info from '../info/Info';
 import { SystemInfo } from '@ranna-go/ranna-ts/dist/models';
 import ExecButton from '../exec-button/ExecButton';
 import { mapLang } from '../../util/languages';
+import { useStore } from '../../services/store';
 
 interface HeaderProperties {
   info: SystemInfo;
@@ -19,11 +20,17 @@ interface HeaderProperties {
 }
 
 export default function Header(props: HeaderProperties) {
+  const setShowSettings = useStore((s) => s.setShowSettings);
+
   const options = props.languages.map((l) => (
     <option key={l} value={l}>
       {mapLang(l).display}
     </option>
   ));
+
+  function openSettings() {
+    setShowSettings(true);
+  }
 
   return (
     <div className="header">
@@ -45,6 +52,9 @@ export default function Header(props: HeaderProperties) {
       >
         {options}
       </select>
+      <button className="settings" onClick={() => openSettings()}>
+        ⚙<span className="hide-mobile">&nbsp;settings</span>
+      </button>
       <button
         className="share"
         disabled={props.disabled}

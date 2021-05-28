@@ -12,8 +12,10 @@ import './App.scss';
 import ExecButton from './components/exec-button/ExecButton';
 import Header from './components/header/Header';
 import ResultViewer from './components/result-viewer/ResultViewer';
+import Settings from './components/settings/Settings';
 import Snackbar from './components/snackbar/Snackbar';
 import { client, snippets } from './services/client';
+import { useStore } from './services/store';
 import { mapLang } from './util/languages';
 import LocalStorageUtil from './util/localstorage';
 import InputTimeout from './util/timeoutinput';
@@ -31,6 +33,13 @@ function App() {
   const [snackbarContent, setSnackbarContent] = useState<JSX.Element>();
   const [snackbarColor, setSnackbarColor] =
     useState<string | undefined>(undefined);
+
+  const showSettings = useStore((state) => state.showSettings);
+  const settings = useStore((s) => ({
+    args: s.args,
+    env: s.env,
+    bypassCache: s.bypassCache,
+  }));
 
   const isEmbed = useRef<boolean>(window.self !== window.top);
   const snippetIdent = useRef<string | null>();
@@ -84,10 +93,15 @@ function App() {
       setIsExecuting(true);
       setExecRes({} as ExecutionResponse);
       try {
-        const res = await client.exec({
-          language: selectedLang,
-          code: code.replaceAll('\r\n', '\n'),
-        });
+        const res = await client.exec(
+          {
+            language: selectedLang,
+            code: code.replaceAll('\r\n', '\n'),
+            arguments: settings.args,
+            environment: settings.env,
+          },
+          settings.bypassCache
+        );
         setExecRes(res);
       } catch (err) {
         onError(err);
@@ -178,6 +192,7 @@ function App() {
           floating
         />
       )}
+      {showSettings && <Settings />}
       {!isEmbed.current && (
         <Header
           info={info}
