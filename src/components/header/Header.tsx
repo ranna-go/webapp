@@ -20,7 +20,9 @@ interface HeaderProperties {
 
 export default function Header(props: HeaderProperties) {
   const options = props.languages.map((l) => (
-    <option key={l}>{mapLang(l)}</option>
+    <option key={l} value={l}>
+      {mapLang(l).display}
+    </option>
   ));
 
   return (

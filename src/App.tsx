@@ -194,7 +194,7 @@ function App() {
       )}
       <Editor
         height={`calc(100vh - ${isEmbed.current ? 24 : 81}px)`}
-        language={mapLang(selectedLang)}
+        language={mapLang(selectedLang).editor}
         theme="vs-dark"
         value={code}
         onChange={(v) => setCodeWrapper(v!)}
