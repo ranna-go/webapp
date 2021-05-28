@@ -3,6 +3,7 @@ import { ReactComponent as Logo } from '../../assets/logo.svg';
 import Info from '../info/Info';
 import { SystemInfo } from '@ranna-go/ranna-ts/dist/models';
 import ExecButton from '../exec-button/ExecButton';
+import { mapLang } from '../../util/languages';
 
 interface HeaderProperties {
   info: SystemInfo;
@@ -18,7 +19,10 @@ interface HeaderProperties {
 }
 
 export default function Header(props: HeaderProperties) {
-  const options = props.languages.map((l) => <option key={l}>{l}</option>);
+  const options = props.languages.map((l) => (
+    <option key={l}>{mapLang(l)}</option>
+  ));
+
   return (
     <div className="header">
       <div className="logo">

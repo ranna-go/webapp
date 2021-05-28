@@ -15,14 +15,10 @@ import Header from './components/header/Header';
 import ResultViewer from './components/result-viewer/ResultViewer';
 import Snackbar from './components/snackbar/Snackbar';
 import { client, snippets } from './services/client';
+import { mapLang } from './util/languages';
 import LocalStorageUtil from './util/localstorage';
 import InputTimeout from './util/timeoutinput';
 import WindowKeyHookBuilder from './util/windowkeyhooker';
-
-const langMap: StringMap = {
-  'python3': 'python',
-  'openjdk-11': 'java',
-};
 
 function App() {
   const [specs, setSpecs] = useState({} as SpecMap);
@@ -34,9 +30,8 @@ function App() {
 
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarContent, setSnackbarContent] = useState<JSX.Element>();
-  const [snackbarColor, setSnackbarColor] = useState<string | undefined>(
-    undefined
-  );
+  const [snackbarColor, setSnackbarColor] =
+    useState<string | undefined>(undefined);
 
   const isEmbed = useRef<boolean>(window.self !== window.top);
   const snippetIdent = useRef<string | null>();
@@ -54,7 +49,13 @@ function App() {
 
     client
       .spec()
-      .then((res) => setSpecs(res))
+      .then((res) => {
+        const m: SpecMap = {};
+        Object.keys(res)
+          .filter((k) => !res[k].use)
+          .forEach((k) => (m[k] = res[k]));
+        setSpecs(m);
+      })
       .catch();
 
     if (snippetIdent.current) {
@@ -217,10 +218,6 @@ function App() {
       )}
     </div>
   );
-}
-
-function mapLang(lang: string): string {
-  return langMap[lang] ?? lang;
 }
 
 export default App;
