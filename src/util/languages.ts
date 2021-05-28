@@ -1,5 +1,3 @@
-import { StringMap } from '@ranna-go/ranna-ts';
-
 export interface LangName {
   editor: string;
   display: string;

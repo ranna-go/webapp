@@ -4,7 +4,6 @@ import {
   ExecutionResponse,
   Snippet,
   SpecMap,
-  StringMap,
 } from '@ranna-go/ranna-ts';
 import { SystemInfo } from '@ranna-go/ranna-ts/dist/models';
 import { useEffect, useRef } from 'react';

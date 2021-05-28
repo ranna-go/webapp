@@ -15,7 +15,6 @@ export default class WindowKeyHookBuilder {
         (e.shiftKey ? 'shift+' : '') +
         e.key
       ).toLowerCase();
-      console.log(key);
       const handler = this.handlers[key];
       if (!!handler) {
         e.preventDefault();
