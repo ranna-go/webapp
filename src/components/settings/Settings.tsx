@@ -76,7 +76,17 @@ export default function Settings() {
           <label htmlFor="cb-bypasscache">Bypass Cache</label>
         </div>
         <div>
-          <p className="label">Snippets API Key</p>
+          <p className="label">
+            <span>Snippets API Key</span>
+            <a
+              style={{ marginLeft: '15px' }}
+              href="https://app.snippets.ranna.zekro.de"
+              target="_blank"
+              rel="noreferrer"
+            >
+              How do I get one?
+            </a>
+          </p>
           <input
             type="password"
             value={apiKey}
