@@ -1,5 +1,6 @@
 import { StringMap } from '@ranna-go/ranna-ts';
 import create from 'zustand';
+import LocalStorageUtil from '../util/localstorage';
 
 export interface Store {
   showSettings: boolean;
@@ -13,6 +14,9 @@ export interface Store {
 
   bypassCache: boolean;
   setBypassCache: (v: boolean) => void;
+
+  apiKey: string;
+  setApiKey: (v: string) => void;
 }
 
 export const useStore = create<Store>((set) => ({
@@ -27,4 +31,7 @@ export const useStore = create<Store>((set) => ({
 
   bypassCache: false,
   setBypassCache: (bypassCache) => set({ bypassCache }),
+
+  apiKey: LocalStorageUtil.get('snippets.apiKey', '')!,
+  setApiKey: (apiKey) => set({ apiKey }),
 }));

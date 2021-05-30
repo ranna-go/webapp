@@ -1,6 +1,7 @@
 import { StringMap } from '@ranna-go/ranna-ts';
 import { useEffect, useState } from 'react';
 import { useStore } from '../../services/store';
+import LocalStorageUtil from '../../util/localstorage';
 import './Settings.scss';
 
 export default function Settings() {
@@ -11,6 +12,7 @@ export default function Settings() {
     s.bypassCache,
     s.setBypassCache,
   ]);
+  const [apiKey, setApiKey] = useStore((s) => [s.apiKey, s.setApiKey]);
 
   const [envInpt, setEnvInpt] = useState('');
 
@@ -29,6 +31,11 @@ export default function Settings() {
       .filter((s) => s.length > 1)
       .forEach((s) => (m[s[0]] = s[1]));
     setEnv(m);
+  }
+
+  function onApiKeyInput(v: string) {
+    LocalStorageUtil.set('snippets.apiKey', v);
+    setApiKey(v);
   }
 
   useEffect(() => {
@@ -67,6 +74,14 @@ export default function Settings() {
             onChange={(e) => setBypassCache(e.currentTarget.checked)}
           />
           <label htmlFor="cb-bypasscache">Bypass Cache</label>
+        </div>
+        <div>
+          <p className="label">Snippets API Key</p>
+          <input
+            type="password"
+            value={apiKey}
+            onInput={(e) => onApiKeyInput(e.currentTarget.value)}
+          />
         </div>
       </div>
     </div>

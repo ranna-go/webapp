@@ -39,6 +39,7 @@ function App() {
     args: s.args,
     env: s.env,
     bypassCache: s.bypassCache,
+    apiKey: s.apiKey,
   }));
 
   const isEmbed = useRef<boolean>(window.self !== window.top);
@@ -117,6 +118,8 @@ function App() {
           !snippetIdent.current ||
           code.trim() !== originalSnippetCode.current?.trim()
         ) {
+          if (settings.apiKey)
+            snippets.clientOptions.auth = `bearer ${settings.apiKey}`;
           const snippet = await snippets.create({
             code: code.replaceAll('\r\n', '\n'),
             language: selectedLang,
