@@ -56,14 +56,14 @@ function App() {
   useEffect(() => {
     snippetIdent.current = new URLSearchParams(window.location.search).get('s');
 
+    let _specs: SpecMap = {};
     client
       .spec()
       .then((res) => {
-        const m: SpecMap = {};
         Object.keys(res)
           .filter((k) => !res[k].use)
-          .forEach((k) => (m[k] = res[k]));
-        setSpecs(m);
+          .forEach((k) => (_specs[k] = res[k]));
+        setSpecs(_specs);
       })
       .catch();
 
@@ -79,7 +79,7 @@ function App() {
     } else {
       const lastLang = LocalStorageUtil.get<string>(
         'last.language',
-        Object.keys(specs)[0]
+        Object.keys(_specs)[0]
       );
       if (lastLang) setSelectedLang(lastLang);
       const lastCode = LocalStorageUtil.get<string>('last.code');
