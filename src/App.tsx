@@ -77,7 +77,10 @@ function App() {
         })
         .catch();
     } else {
-      const lastLang = LocalStorageUtil.get<string>('last.language');
+      const lastLang = LocalStorageUtil.get<string>(
+        'last.language',
+        Object.keys(specs)[0]
+      );
       if (lastLang) setSelectedLang(lastLang);
       const lastCode = LocalStorageUtil.get<string>('last.code');
       if (lastCode) setCode(lastCode);
@@ -112,6 +115,7 @@ function App() {
   }
 
   async function share() {
+    console.log(code, selectedLang);
     if (code && selectedLang) {
       try {
         if (
