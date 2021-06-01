@@ -11,6 +11,7 @@ const langMap: { [key: string]: string[] } = {
   'mono': ['csharp', 'c# (mono)'],
   'dotnet-script': ['csharp', 'c# (script)'],
   'node': ['javascript'],
+  'kotlin-script': ['kotlin', 'kotlin (script)'],
 };
 
 export function mapLang(lang: string): LangName {
