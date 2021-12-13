@@ -1,13 +1,25 @@
-import { BrowserRouter as Router } from 'react-router-dom';
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { MainRoute } from './routes/Main';
+import { DefaultTheme } from './theme/theme';
 
-const GlobalStyle = createGlobalStyle``;
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: ${(p) => p.theme.background};
+    color: ${(p) => p.theme.text};
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+`;
 
 function App() {
   return (
     <div>
-      <Router></Router>
-      <GlobalStyle />
+      <ThemeProvider theme={DefaultTheme}>
+        <MainRoute />
+        <GlobalStyle />
+      </ThemeProvider>
     </div>
   );
 }
