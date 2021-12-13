@@ -32,16 +32,18 @@ const RightContainer = styled.div`
   margin-left: auto;
 `;
 
-export const Header: React.FC<Props> = ({ spec }) => {
+export const Header: React.FC<Props> = ({ spec = {} }) => {
   const [active, setActive] = useState(false);
 
-  const _specOptions = Object.keys(spec ?? {}).map(
-    (s) =>
-      ({
-        value: s,
-        displayName: mapLang(s).display,
-      } as Option)
-  );
+  const _specOptions = Object.keys(spec)
+    .filter((s) => !spec[s].use)
+    .map(
+      (s) =>
+        ({
+          value: s,
+          displayName: mapLang(s).display,
+        } as Option)
+    );
 
   return (
     <Container>
