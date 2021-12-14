@@ -9,6 +9,7 @@ import { mapLang } from 'util/languages';
 
 interface Props {
   spec?: SpecMap;
+  onSelectSpec?: (v: string) => void;
 }
 
 const Container = styled.div`
@@ -32,7 +33,10 @@ const RightContainer = styled.div`
   margin-left: auto;
 `;
 
-export const Header: React.FC<Props> = ({ spec = {} }) => {
+export const Header: React.FC<Props> = ({
+  spec = {},
+  onSelectSpec = () => {},
+}) => {
   const [active, setActive] = useState(false);
 
   const _specOptions = Object.keys(spec)
@@ -49,7 +53,10 @@ export const Header: React.FC<Props> = ({ spec = {} }) => {
     <Container>
       <Logo />
       <ExecButton active={active} onActivate={() => setActive(true)} />
-      <Select options={_specOptions} />
+      <Select
+        options={_specOptions}
+        onChange={(e) => onSelectSpec(e.currentTarget.value)}
+      />
       <Button icon={'⚙️'}>Settings</Button>
       <RightContainer>
         <Button icon={'🔗'}>Share Snippet</Button>
