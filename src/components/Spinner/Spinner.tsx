@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-interface Props {}
-
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -66,7 +64,7 @@ const Container = styled.div`
   }
 `;
 
-export const Spinner: React.FC<Props> = ({}) => {
+export const Spinner: React.FC = () => {
   return (
     <Container>
       <div></div>
