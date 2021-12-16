@@ -51,7 +51,7 @@ export const Header: React.FC<Props> = ({
 
   useEffect(() => {
     if (!spec) setSpec(Object.keys(specMap)[0]);
-  }, []);
+  }, [specMap]);
 
   const _specOptions = Object.keys(specMap)
     .filter((s) => !specMap[s].use)
