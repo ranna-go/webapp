@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ControlStyle } from 'styles/controls';
+import { InputStyle } from 'styles/controls';
 
 export interface Option {
   value: any;
@@ -13,9 +13,10 @@ type Props = React.SelectHTMLAttributes<any> & {
 };
 
 const StyledSelect = styled.select`
-  ${ControlStyle}
+  ${InputStyle}
 
-  background-color: ${(p) => p.theme.darkGray};
+  width: fit-content;
+  cursor: pointer;
 `;
 
 export const Select = React.forwardRef<HTMLSelectElement, Props>(

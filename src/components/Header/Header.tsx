@@ -2,14 +2,16 @@ import styled from 'styled-components';
 import { ReactComponent as Logo } from 'assets/icons/logo.svg';
 import { Button } from 'components/Button';
 import { ExecButton } from './ExecButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Select, Option } from 'components/Select';
 import { SpecMap } from '@ranna-go/ranna-ts';
 import { mapLang } from 'util/languages';
+import { useStore } from 'services/store';
 
 interface Props {
-  spec?: SpecMap;
-  onSelectSpec?: (v: string) => void;
+  specMap?: SpecMap;
+  onOpenSettings?: () => void;
+  onRun?: () => Promise<any>;
 }
 
 const Container = styled.div`
@@ -19,6 +21,7 @@ const Container = styled.div`
   padding: 0.8rem;
   display: flex;
   align-items: center;
+  z-index: 10;
 
   > * {
     margin-right: 1rem;
@@ -34,13 +37,24 @@ const RightContainer = styled.div`
 `;
 
 export const Header: React.FC<Props> = ({
-  spec = {},
-  onSelectSpec = () => {},
+  specMap = {},
+  onOpenSettings = () => {},
+  onRun = async () => {},
 }) => {
   const [active, setActive] = useState(false);
+  const [spec, setSpec] = useStore((s) => [s.spec, s.setSpec]);
 
-  const _specOptions = Object.keys(spec)
-    .filter((s) => !spec[s].use)
+  const _run = () => {
+    setActive(true);
+    onRun().finally(() => setActive(false));
+  };
+
+  useEffect(() => {
+    if (!spec) setSpec(Object.keys(specMap)[0]);
+  }, []);
+
+  const _specOptions = Object.keys(specMap)
+    .filter((s) => !specMap[s].use)
     .map(
       (s) =>
         ({
@@ -52,12 +66,15 @@ export const Header: React.FC<Props> = ({
   return (
     <Container>
       <Logo />
-      <ExecButton active={active} onActivate={() => setActive(true)} />
+      <ExecButton active={active} onActivate={_run} />
       <Select
+        value={spec}
         options={_specOptions}
-        onChange={(e) => onSelectSpec(e.currentTarget.value)}
+        onChange={(e) => setSpec(e.currentTarget.value)}
       />
-      <Button icon={'⚙️'}>Settings</Button>
+      <Button icon={'⚙️'} onClick={onOpenSettings}>
+        Settings
+      </Button>
       <RightContainer>
         <Button icon={'🔗'}>Share Snippet</Button>
       </RightContainer>

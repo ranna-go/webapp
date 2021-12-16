@@ -11,9 +11,12 @@ interface Props {
 
 const Wrapper = styled.div`
   height: 100%;
+  width: 100%;
 
   > * {
     padding: 1rem 0 0 0;
+    height: calc(100% - 1.5rem) !important;
+    box-sizing: border-box;
   }
 `;
 

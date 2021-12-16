@@ -6,6 +6,7 @@ export interface Theme {
   text: string;
   gray: string;
   darkGray: string;
+  textRed: string;
 }
 
 export const DefaultTheme: Theme = {
@@ -16,4 +17,5 @@ export const DefaultTheme: Theme = {
   text: '#f4f4f5',
   gray: '#455a64',
   darkGray: '#263238',
+  textRed: '#EF5350',
 };

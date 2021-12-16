@@ -3,8 +3,11 @@ import create from 'zustand';
 import LocalStorageUtil from 'util/localstorage';
 
 export interface Store {
-  showSettings: boolean;
-  setShowSettings: (v: boolean) => void;
+  spec: string;
+  setSpec: (v: string) => void;
+
+  code: string;
+  setCode: (v: string) => void;
 
   args: string[];
   setArgs: (v: string[]) => void;
@@ -20,8 +23,11 @@ export interface Store {
 }
 
 export const useStore = create<Store>((set) => ({
-  showSettings: false,
-  setShowSettings: (showSettings) => set({ showSettings }),
+  spec: '',
+  setSpec: (spec) => set({ spec }),
+
+  code: '',
+  setCode: (code) => set({ code }),
 
   args: [],
   setArgs: (args) => set({ args }),
@@ -33,5 +39,8 @@ export const useStore = create<Store>((set) => ({
   setBypassCache: (bypassCache) => set({ bypassCache }),
 
   apiKey: LocalStorageUtil.get('snippets.apiKey', '')!,
-  setApiKey: (apiKey) => set({ apiKey }),
+  setApiKey: (apiKey) => {
+    set({ apiKey });
+    LocalStorageUtil.set('snippets.apiKey', apiKey);
+  },
 }));
