@@ -12,6 +12,7 @@ interface Props {
   specMap?: SpecMap;
   onOpenSettings?: () => void;
   onRun?: () => Promise<any>;
+  onSnippet?: () => void;
 }
 
 const Container = styled.div`
@@ -40,18 +41,15 @@ export const Header: React.FC<Props> = ({
   specMap = {},
   onOpenSettings = () => {},
   onRun = async () => {},
+  onSnippet = () => {},
 }) => {
   const [active, setActive] = useState(false);
-  const [spec, setSpec] = useStore((s) => [s.spec, s.setSpec]);
+  const { spec, setSpec, code } = useStore();
 
   const _run = () => {
     setActive(true);
     onRun().finally(() => setActive(false));
   };
-
-  useEffect(() => {
-    if (!spec) setSpec(Object.keys(specMap)[0]);
-  }, [specMap]);
 
   const _specOptions = Object.keys(specMap)
     .filter((s) => !specMap[s].use)
@@ -66,7 +64,7 @@ export const Header: React.FC<Props> = ({
   return (
     <Container>
       <Logo />
-      <ExecButton active={active} onActivate={_run} />
+      <ExecButton disabled={!code || !spec} active={active} onActivate={_run} />
       <Select
         value={spec}
         options={_specOptions}
@@ -76,7 +74,9 @@ export const Header: React.FC<Props> = ({
         Settings
       </Button>
       <RightContainer>
-        <Button icon={'🔗'}>Share Snippet</Button>
+        <Button icon={'🔗'} disabled={!code || !spec} onClick={onSnippet}>
+          Share Snippet
+        </Button>
       </RightContainer>
     </Container>
   );

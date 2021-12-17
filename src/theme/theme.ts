@@ -7,6 +7,11 @@ export interface Theme {
   gray: string;
   darkGray: string;
   textRed: string;
+
+  info: string;
+  success: string;
+  warn: string;
+  error: string;
 }
 
 export const DefaultTheme: Theme = {
@@ -18,4 +23,9 @@ export const DefaultTheme: Theme = {
   gray: '#455a64',
   darkGray: '#263238',
   textRed: '#EF5350',
+
+  info: '#039BE5',
+  success: '#7CB342',
+  warn: '#FB8C00',
+  error: '#D81B60',
 };

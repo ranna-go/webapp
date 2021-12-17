@@ -10,23 +10,18 @@ export function useCodeExec() {
   const [result, setResult] = useState<Result>();
 
   const run = async () => {
-    // try {
-    //   const res = await Ranna.exec(
-    //     {
-    //       code,
-    //       language: spec,
-    //       arguments: args,
-    //       environment: env,
-    //     },
-    //     bypassCache
-    //   );
-    //   setResult(res);
-    // } catch {}
-    setResult({
-      exectimems: 1,
-      stderr: '',
-      stdout: 'asdasdasd',
-    });
+    try {
+      const res = await Ranna.exec(
+        {
+          code,
+          language: spec,
+          arguments: args,
+          environment: env,
+        },
+        bypassCache
+      );
+      setResult(res);
+    } catch {}
   };
 
   const reset = () => {
