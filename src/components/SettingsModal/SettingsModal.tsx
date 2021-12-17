@@ -24,6 +24,12 @@ const StyledCheckBox = styled(CheckBox)`
   margin: 1rem 0;
 `;
 
+const TokenInputLabel = styled(InputLabel)`
+  > a {
+    margin-left: 1em;
+  }
+`;
+
 export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
   const {
     args,
@@ -77,7 +83,12 @@ export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
         >
           Bypass Cache
         </StyledCheckBox>
-        <InputLabel>Snippets Token</InputLabel>
+        <TokenInputLabel>
+          Snippets Token
+          <a href="https://app.snippets.ranna.zekro.de/" target="_blank">
+            How to I get a token?
+          </a>
+        </TokenInputLabel>
         <Input
           placeholder="token"
           type="password"
