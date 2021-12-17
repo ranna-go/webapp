@@ -1,5 +1,4 @@
 import { Input } from 'components/Input';
-import { useRef } from 'react';
 import styled from 'styled-components';
 
 interface Props {

@@ -61,11 +61,11 @@ export const Info: React.FC<Props> = ({ info, ...props }) => {
         </tbody>
       </Table>
       <span>
-        <a target="_blank" href="https://github.com/ranna-go">
+        <a target="_blank" rel="noreferrer" href="https://github.com/ranna-go">
           GitHub
         </a>
         &nbsp;|&nbsp;
-        <a target="_blank" href="https://zekro.de/imprint">
+        <a target="_blank" rel="noreferrer" href="https://zekro.de/imprint">
           Imprint
         </a>
       </span>

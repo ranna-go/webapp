@@ -83,13 +83,13 @@ export const MainRoute: React.FC = () => {
           }
         });
     }
-  }, []);
+  }, [setCode, setSpec, show, snippet]);
 
   useEffect(() => {
     if (!spec && specMap) {
       setSpec(Object.keys(specMap)[0]);
     }
-  }, [spec, specMap]);
+  }, [spec, specMap, setSpec]);
 
   const _postSnippet = async () => {
     if (snippet && code === lastSnippetRef.current) {
@@ -132,7 +132,7 @@ export const MainRoute: React.FC = () => {
       </EditorContainer>
       {isEmbedded && (
         <EmbedFooter>
-          <a target="_blank" href={window.location.href}>
+          <a target="_blank" href={window.location.href} rel="noreferrer">
             Provided with ❤️ by ranna.
           </a>
           <span>

@@ -85,7 +85,11 @@ export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
         </StyledCheckBox>
         <TokenInputLabel>
           Snippets Token
-          <a href="https://app.snippets.ranna.zekro.de/" target="_blank">
+          <a
+            href="https://app.snippets.ranna.zekro.de/"
+            target="_blank"
+            rel="noreferrer"
+          >
             How to I get a token?
           </a>
         </TokenInputLabel>
