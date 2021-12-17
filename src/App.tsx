@@ -1,242 +1,29 @@
-import Editor from '@monaco-editor/react';
-import {
-  APIError,
-  ExecutionResponse,
-  Snippet,
-  SpecMap,
-} from '@ranna-go/ranna-ts';
-import { SystemInfo } from '@ranna-go/ranna-ts/dist/models';
-import { useEffect, useRef } from 'react';
-import { useState } from 'react';
-import './App.scss';
-import ExecButton from './components/exec-button/ExecButton';
-import Header from './components/header/Header';
-import ResultViewer from './components/result-viewer/ResultViewer';
-import Settings from './components/settings/Settings';
-import Snackbar from './components/snackbar/Snackbar';
-import { client, snippets } from './services/client';
-import { useStore } from './services/store';
-import { mapLang } from './util/languages';
-import LocalStorageUtil from './util/localstorage';
-import InputTimeout from './util/timeoutinput';
-import WindowKeyHookBuilder from './util/windowkeyhooker';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { MainRoute } from './routes/Main';
+import { DefaultTheme } from './theme/theme';
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: ${(p) => p.theme.background};
+    color: ${(p) => p.theme.text};
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  a {
+    color: ${(p) => p.theme.accent};
+  }
+`;
 
 function App() {
-  const [specs, setSpecs] = useState({} as SpecMap);
-  const [selectedLang, setSelectedLang] = useState('');
-  const [code, setCode] = useState('');
-  const [execRes, setExecRes] = useState({} as ExecutionResponse);
-  const [info, setInfo] = useState({} as SystemInfo);
-  const [isExecuting, setIsExecuting] = useState(false);
-
-  const [showSnackbar, setShowSnackbar] = useState(false);
-  const [snackbarContent, setSnackbarContent] = useState<JSX.Element>();
-  const [snackbarColor, setSnackbarColor] =
-    useState<string | undefined>(undefined);
-
-  const showSettings = useStore((state) => state.showSettings);
-  const settings = useStore((s) => ({
-    args: s.args,
-    env: s.env,
-    bypassCache: s.bypassCache,
-    apiKey: s.apiKey,
-  }));
-
-  const isEmbed = useRef<boolean>(window.self !== window.top);
-  const snippetIdent = useRef<string | null>();
-  const originalSnippetCode = useRef<string>();
-  const codeInputTimeout = useRef(new InputTimeout(1000));
-  const resultViewerHeight = useRef(0);
-
-  window.onkeypress = new WindowKeyHookBuilder()
-    .on('shift+enter', () => run())
-    .on('alt+shift+r', () => resetStroe())
-    .build();
-
-  useEffect(() => {
-    snippetIdent.current = new URLSearchParams(window.location.search).get('s');
-
-    let _specs: SpecMap = {};
-    client
-      .spec()
-      .then((res) => {
-        Object.keys(res)
-          .filter((k) => !res[k].use)
-          .forEach((k) => (_specs[k] = res[k]));
-        setSpecs(_specs);
-      })
-      .catch();
-
-    if (snippetIdent.current) {
-      snippets
-        .get(snippetIdent.current)
-        .then((snippet) => {
-          setSelectedLang(snippet.language);
-          setCode(snippet.code);
-          originalSnippetCode.current = snippet.code;
-        })
-        .catch();
-    } else {
-      const lastLang = LocalStorageUtil.get<string>(
-        'last.language',
-        Object.keys(_specs)[0]
-      );
-      if (lastLang) setSelectedLang(lastLang);
-      const lastCode = LocalStorageUtil.get<string>('last.code');
-      if (lastCode) setCode(lastCode);
-    }
-
-    client
-      .info()
-      .then((res) => setInfo(res))
-      .catch();
-  }, []);
-
-  async function run() {
-    if (!isExecuting && code && selectedLang) {
-      setIsExecuting(true);
-      setExecRes({} as ExecutionResponse);
-      try {
-        const res = await client.exec(
-          {
-            language: selectedLang,
-            code: code.replaceAll('\r\n', '\n'),
-            arguments: settings.args,
-            environment: settings.env,
-          },
-          settings.bypassCache
-        );
-        setExecRes(res);
-      } catch (err) {
-        onError(err);
-      }
-      setIsExecuting(false);
-    }
-  }
-
-  async function share() {
-    console.log(code, selectedLang);
-    if (code && selectedLang) {
-      try {
-        if (
-          !snippetIdent.current ||
-          code.trim() !== originalSnippetCode.current?.trim()
-        ) {
-          if (settings.apiKey)
-            snippets.clientOptions.auth = `bearer ${settings.apiKey}`;
-          const snippet = await snippets.create({
-            code: code.replaceAll('\r\n', '\n'),
-            language: selectedLang,
-          } as Snippet);
-          snippetIdent.current = snippet.ident;
-          window.history.pushState('', '', '/?s=' + snippetIdent.current);
-        }
-
-        setSnackbarColor(undefined);
-        setSnackbarContent(
-          <div>
-            <span>You can share the snippet using this link.</span>
-            <br />
-            <input
-              className="share-input"
-              readOnly
-              value={window.location.origin + '?s=' + snippetIdent.current}
-              onFocus={(e) => e.target.select()}
-            />
-          </div>
-        );
-        setShowSnackbar(true);
-      } catch (err) {
-        onError(err);
-      }
-    }
-  }
-
-  function onError(err: Error) {
-    if (
-      (err instanceof APIError && err.code === 429) ||
-      err.message === 'Failed to fetch'
-    ) {
-      err.message = 'You need to wait until you can perform this action again.';
-    }
-    setSnackbarColor('#f44336');
-    setSnackbarContent(<span>{err.message}</span>);
-    setShowSnackbar(true);
-    setTimeout(() => setShowSnackbar(false), 4000);
-  }
-
-  function setSelectedLangWrapper(v: string) {
-    setSelectedLang(v);
-    LocalStorageUtil.set('last.language', v);
-  }
-
-  function setCodeWrapper(v: string) {
-    setCode(v);
-    codeInputTimeout.current.do(() => LocalStorageUtil.set('last.code', v));
-  }
-
-  function resetStroe() {
-    setCode('');
-    LocalStorageUtil.del('last.language');
-    LocalStorageUtil.del('last.code');
-  }
-
-  resultViewerHeight.current =
-    document.getElementById('result-viewer')?.clientHeight ?? 0;
   return (
-    <div className="container">
-      <Snackbar
-        show={showSnackbar}
-        color={snackbarColor}
-        onHide={() => setShowSnackbar(false)}
-      >
-        {snackbarContent}
-      </Snackbar>
-      {isEmbed.current && (
-        <ExecButton
-          isExecuting={isExecuting}
-          onExecute={() => run()}
-          floating
-        />
-      )}
-      {showSettings && <Settings />}
-      {!isEmbed.current && (
-        <Header
-          info={info}
-          languages={Object.keys(specs) ?? []}
-          selectedLanguage={selectedLang}
-          isExecuting={isExecuting}
-          disabled={!code}
-          onLanguageSelect={(v) => setSelectedLangWrapper(v)}
-          onExecute={() => run()}
-          onShare={() => share()}
-          onReset={() => resetStroe()}
-        />
-      )}
-      <Editor
-        height={`calc(100vh - ${isEmbed.current ? 24 : 81}px)`}
-        language={mapLang(selectedLang).editor}
-        theme="vs-dark"
-        value={code}
-        onChange={(v) => setCodeWrapper(v!)}
-        wrapperClassName="code-editor"
-        options={{
-          readOnly: isEmbed.current,
-          minimap: { enabled: false },
-        }}
-      ></Editor>
-      <ResultViewer res={execRes} />
-      {isEmbed.current && (
-        <a
-          className="embed-footer"
-          href={window.location.toString()}
-          target="_blank"
-          rel="noreferrer"
-          style={{ bottom: resultViewerHeight.current + 15 }}
-        >
-          <span>Provided with ♥ by ranna</span>
-        </a>
-      )}
+    <div>
+      <ThemeProvider theme={DefaultTheme}>
+        <MainRoute />
+        <GlobalStyle />
+      </ThemeProvider>
     </div>
   );
 }
