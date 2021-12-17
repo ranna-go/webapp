@@ -10,9 +10,10 @@ import { ResultViewer } from 'components/ResultViewer';
 import { NotificationType, SnackBar } from 'components/SnackBar';
 import { useSnackBar } from 'components/SnackBar/useSnackBar';
 import { useQuery } from 'hooks/useQuery';
-import { Snippets } from 'services/client';
+import { Ranna, Snippets } from 'services/client';
 import { Snippet } from '@ranna-go/ranna-ts';
 import { SnippetNotification } from './SnippetNotification';
+import { useInfo } from 'hooks/useInfo';
 
 const Container = styled.div`
   width: 100vw;
@@ -36,6 +37,7 @@ export const MainRoute: React.FC = () => {
   const [snippet, setSnippet] = useQuery('s');
   const { show } = useSnackBar();
   const { run, result, reset } = useCodeExec();
+  const systemInfo = useInfo();
   const lastSnippetRef = useRef<string>('');
 
   useEffect(() => {
@@ -97,6 +99,7 @@ export const MainRoute: React.FC = () => {
       <Header
         onOpenSettings={() => setSettingsOpen(true)}
         specMap={specMap}
+        info={systemInfo}
         onRun={run}
         onSnippet={_postSnippet}
       />

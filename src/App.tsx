@@ -11,6 +11,10 @@ const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
+
+  a {
+    color: ${(p) => p.theme.accent};
+  }
 `;
 
 function App() {
