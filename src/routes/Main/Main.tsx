@@ -83,13 +83,13 @@ export const MainRoute: React.FC = () => {
           }
         });
     }
-  }, [setCode, setSpec, show, snippet]);
+  }, []);
 
   useEffect(() => {
     if (!spec && specMap) {
       setSpec(Object.keys(specMap)[0]);
     }
-  }, [spec, specMap, setSpec]);
+  }, []);
 
   const _postSnippet = async () => {
     if (snippet && code === lastSnippetRef.current) {

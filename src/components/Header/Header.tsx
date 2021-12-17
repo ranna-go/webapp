@@ -84,7 +84,7 @@ export const Header: React.FC<Props> = ({
   onRun = async () => {},
   onSnippet = () => {},
 }) => {
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(true);
   const { spec, setSpec, code } = useStore();
 
   const _run = () => {

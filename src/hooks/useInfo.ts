@@ -19,7 +19,7 @@ export function useInfo() {
       .catch((e) =>
         show('Failed loading system information.', NotificationType.ERROR)
       );
-  }, [show]);
+  }, []);
 
   return info;
 }

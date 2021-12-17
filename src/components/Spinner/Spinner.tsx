@@ -4,8 +4,8 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  width: 80px;
-  height: 24px;
+  min-width: 80px;
+  min-height: 24px;
 
   & div {
     position: absolute;
