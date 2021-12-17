@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { TransWithMuchEzCB } from 'styles/default';
 import { linebreak } from 'util/format';
 import { CloseButton } from './CloseButton';
+import { format } from 'date-fns';
 
 interface Props {
   result?: Result;
@@ -64,11 +65,15 @@ const Hint = styled.i`
   opacity: 0.7;
 `;
 
+const CacheHint = styled(Hint)`
+  font-size: 0.8em;
+`;
+
 export const ResultViewer: React.FC<Props> = ({
   result,
   onClosing = () => {},
 }) => {
-  const { stdout, stderr } = result ?? {};
+  const { stdout, stderr, from_cache, cache_date } = result ?? {};
 
   return (
     <Container show={!!result}>
@@ -84,6 +89,12 @@ export const ResultViewer: React.FC<Props> = ({
             <PartHeading>stderr</PartHeading>
             <span>{linebreak(stderr)}</span>
           </ErrContaienr>
+        )}
+        {from_cache && (
+          <CacheHint>
+            Cached result (
+            {format(new Date(cache_date!), 'yyyy/MM/dd - HH:mm:ss')}).
+          </CacheHint>
         )}
         {!stdout && !stderr && <Hint>No output.</Hint>}
       </div>
