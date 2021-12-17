@@ -41,7 +41,7 @@ const Container = styled.div<{ show: boolean }>`
     max-width: 100%;
     height: fit-content;
     max-height: 50vh;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 `;
 

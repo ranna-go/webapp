@@ -10,10 +10,11 @@ import { ResultViewer } from 'components/ResultViewer';
 import { NotificationType, SnackBar } from 'components/SnackBar';
 import { useSnackBar } from 'components/SnackBar/useSnackBar';
 import { useQuery } from 'hooks/useQuery';
-import { Ranna, Snippets } from 'services/client';
+import { Snippets } from 'services/client';
 import { Snippet } from '@ranna-go/ranna-ts';
 import { SnippetNotification } from './SnippetNotification';
 import { useInfo } from 'hooks/useInfo';
+import { useIsEmbedded } from 'hooks/useIsEmbedded';
 
 const Container = styled.div`
   width: 100vw;
@@ -30,6 +31,18 @@ const EditorContainer = styled.div`
   position: relative;
 `;
 
+const EmbedFooter = styled.div`
+  background-color: ${(p) => p.theme.accentDark};
+  font-size: 0.7rem;
+  padding: 0.2em 0.4em;
+  display: flex;
+  justify-content: space-between;
+
+  a {
+    color: ${(p) => p.theme.text};
+  }
+`;
+
 export const MainRoute: React.FC = () => {
   const specMap = useSpec();
   const { code, setCode, spec, setSpec, apiKey } = useStore();
@@ -39,6 +52,7 @@ export const MainRoute: React.FC = () => {
   const { run, result, reset } = useCodeExec();
   const systemInfo = useInfo();
   const lastSnippetRef = useRef<string>('');
+  const isEmbedded = useIsEmbedded();
 
   useEffect(() => {
     if (snippet) {
@@ -102,14 +116,30 @@ export const MainRoute: React.FC = () => {
         info={systemInfo}
         onRun={run}
         onSnippet={_postSnippet}
+        isEmbedded={isEmbedded}
       />
       {settingsOpen && (
         <SettingsModal onClosing={() => setSettingsOpen(false)} />
       )}
       <EditorContainer>
-        <Editor value={code} onChange={setCode} selectedLang={spec} />
+        <Editor
+          value={code}
+          onChange={setCode}
+          selectedLang={spec}
+          readOnly={isEmbedded}
+        />
         <ResultViewer result={result} onClosing={reset} />
       </EditorContainer>
+      {isEmbedded && (
+        <EmbedFooter>
+          <a target="_blank" href={window.location.href}>
+            Provided with ❤️ by ranna.
+          </a>
+          <span>
+            Spec: <code>{spec}</code>
+          </span>
+        </EmbedFooter>
+      )}
       <SnackBar />
     </Container>
   );

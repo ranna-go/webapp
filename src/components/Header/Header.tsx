@@ -12,6 +12,7 @@ import { Info, InfoModel } from 'components/Info';
 interface Props {
   info?: InfoModel;
   specMap?: SpecMap;
+  isEmbedded?: boolean;
   onOpenSettings?: () => void;
   onRun?: () => Promise<any>;
   onSnippet?: () => void;
@@ -63,12 +64,21 @@ const Container = styled.div`
   }
 `;
 
+const FloatingExecButton = styled(ExecButton)`
+  position: absolute;
+  z-index: 1;
+  top: 1em;
+  right: 1em;
+  box-shadow: 0 0.2em 1.5em rgba(0 0 0 / 50%);
+`;
+
 const RightContainer = styled.div`
   margin-left: auto;
 `;
 
 export const Header: React.FC<Props> = ({
   info,
+  isEmbedded,
   specMap = {},
   onOpenSettings = () => {},
   onRun = async () => {},
@@ -93,29 +103,45 @@ export const Header: React.FC<Props> = ({
     );
 
   return (
-    <Container>
-      <LogoContainer>
-        <Logo />
-        {info && (
-          <InfoContainer>
-            <StyledInfo info={info} />
-          </InfoContainer>
-        )}
-      </LogoContainer>
-      <ExecButton disabled={!code || !spec} active={active} onActivate={_run} />
-      <Select
-        value={spec}
-        options={_specOptions}
-        onChange={(e) => setSpec(e.currentTarget.value)}
-      />
-      <Button icon={'⚙️'} onClick={onOpenSettings}>
-        Settings
-      </Button>
-      <RightContainer>
-        <Button icon={'🔗'} disabled={!code || !spec} onClick={onSnippet}>
-          Share Snippet
-        </Button>
-      </RightContainer>
-    </Container>
+    <>
+      {(isEmbedded && (
+        <>
+          <FloatingExecButton
+            disabled={!code || !spec}
+            active={active}
+            onActivate={_run}
+          />
+        </>
+      )) || (
+        <Container>
+          <LogoContainer>
+            <Logo />
+            {info && (
+              <InfoContainer>
+                <StyledInfo info={info} />
+              </InfoContainer>
+            )}
+          </LogoContainer>
+          <ExecButton
+            disabled={!code || !spec}
+            active={active}
+            onActivate={_run}
+          />
+          <Select
+            value={spec}
+            options={_specOptions}
+            onChange={(e) => setSpec(e.currentTarget.value)}
+          />
+          <Button icon={'⚙️'} onClick={onOpenSettings}>
+            Settings
+          </Button>
+          <RightContainer>
+            <Button icon={'🔗'} disabled={!code || !spec} onClick={onSnippet}>
+              Share Snippet
+            </Button>
+          </RightContainer>
+        </Container>
+      )}
+    </>
   );
 };
