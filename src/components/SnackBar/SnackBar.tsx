@@ -15,6 +15,7 @@ const Container = styled.div<Activatible & { closable: boolean }>`
   display: flex;
   justify-content: center;
   pointer-events: ${(p) => (p.active ? 'all' : 'none')};
+  text-align: center;
 `;
 
 const Notification = styled.div<Props & Activatible>`
