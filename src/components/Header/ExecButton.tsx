@@ -16,7 +16,13 @@ export const ExecButton: React.FC<Props> = ({
   };
 
   return (
-    <Button {...props} primary onClick={_onClick} icon={active ? '' : '▶'}>
+    <Button
+      {...props}
+      primary
+      onClick={_onClick}
+      icon={active ? '' : '▶'}
+      ignoreScaling={active}
+    >
       {active ? <Spinner /> : <>Run</>}
     </Button>
   );

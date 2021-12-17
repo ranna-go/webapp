@@ -1,8 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ControlStyle } from 'styles/controls';
 
-type ButtonProps = {
+type ChildrenWrapperProps = {
+  ignoreScaling?: boolean;
+};
+
+type ButtonProps = ChildrenWrapperProps & {
   primary?: boolean;
   icon?: string | JSX.Element;
 };
@@ -25,23 +29,25 @@ const StyledButton = styled.button<ButtonProps>`
   }
 `;
 
-const ChildrenWrapper = styled.span`
+const ChildrenWrapper = styled.span<ChildrenWrapperProps>`
   margin-left: 0.5em;
 
   @media screen and (max-width: 700px) {
-    display: none;
+    display: ${(p) => (p.ignoreScaling ? '' : 'none')};
   }
 `;
 
 export const Button = React.forwardRef<HTMLButtonElement, Props>(
-  ({ children, icon, ...props }, ref) => {
+  ({ children, icon, ignoreScaling, ...props }, ref) => {
     const _icon = (
       <>{icon && typeof icon === 'string' ? <span>{icon}</span> : icon}</>
     );
     return (
       <StyledButton ref={ref} {...props}>
         {_icon}
-        <ChildrenWrapper>{children}</ChildrenWrapper>
+        <ChildrenWrapper ignoreScaling={ignoreScaling}>
+          {children}
+        </ChildrenWrapper>
       </StyledButton>
     );
   }
