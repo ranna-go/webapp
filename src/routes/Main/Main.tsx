@@ -89,7 +89,7 @@ export const MainRoute: React.FC = () => {
     if (!spec && specMap) {
       setSpec(Object.keys(specMap)[0]);
     }
-  }, []);
+  }, [spec, specMap]);
 
   const _postSnippet = async () => {
     if (snippet && code === lastSnippetRef.current) {
