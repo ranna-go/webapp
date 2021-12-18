@@ -54,6 +54,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   z-index: 10;
+  flex-wrap: wrap;
 
   > * {
     margin-right: 1rem;
