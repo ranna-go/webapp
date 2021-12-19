@@ -1,4 +1,5 @@
 import MonacoEditor from '@monaco-editor/react';
+import { useStoredTheme } from 'hooks/useStoredTheme';
 import styled from 'styled-components';
 import { mapLang } from 'util/languages';
 
@@ -26,11 +27,13 @@ export const Editor: React.FC<Props> = ({
   readOnly = false,
   onChange = () => {},
 }) => {
+  const { editorTheme } = useStoredTheme();
+
   return (
     <Wrapper>
       <MonacoEditor
         language={mapLang(selectedLang).editor}
-        theme="vs-dark"
+        theme={editorTheme}
         value={value}
         onChange={(v) => onChange(v!)}
         options={{

@@ -3,6 +3,7 @@ import { Input } from 'components/Input';
 import { CheckBox } from 'components/Input/CheckBox';
 import { TextBox } from 'components/Input/TextBox';
 import { Modal } from 'components/Modal';
+import { ThemeSwitch } from 'components/ThemeSwitch';
 import { useEffect, useState } from 'react';
 import { useStore } from 'services/store';
 import styled from 'styled-components';
@@ -30,6 +31,12 @@ const TokenInputLabel = styled(InputLabel)`
   }
 `;
 
+const HeadingContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
   const {
     args,
@@ -40,6 +47,8 @@ export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
     setApiKey,
     env,
     setEnv,
+    theme,
+    setTheme,
   } = useStore();
 
   const [envInpt, setEnvInpt] = useState('');
@@ -62,7 +71,15 @@ export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
   }, [env]);
 
   return (
-    <Modal heading="Settings" onClosing={onClosing}>
+    <Modal
+      heading={
+        <HeadingContainer>
+          <span>Settings</span>
+          <ThemeSwitch theme={theme} onSwitch={setTheme} />
+        </HeadingContainer>
+      }
+      onClosing={onClosing}
+    >
       <ContentContainer>
         <InputLabel>Arguments</InputLabel>
         <Input

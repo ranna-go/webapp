@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const BACKGROUND_ID = ':background-element';
 
 interface Props {
-  heading?: string;
+  heading?: string | JSX.Element;
   onClosing?: () => void;
 }
 

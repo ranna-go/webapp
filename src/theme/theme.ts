@@ -1,3 +1,8 @@
+export enum AppTheme {
+  DARK = 0,
+  LIGHT = 1,
+}
+
 export interface Theme {
   background: string;
   accent: string;
@@ -14,7 +19,7 @@ export interface Theme {
   error: string;
 }
 
-export const DefaultTheme: Theme = {
+export const DarkTheme: Theme = {
   background: '#1e1e1e',
   accent: '#00acd7',
   accentLight: '#0081d7',
@@ -29,3 +34,21 @@ export const DefaultTheme: Theme = {
   warn: '#FB8C00',
   error: '#D81B60',
 };
+
+export const LightTheme: Theme = {
+  background: '#fffffe',
+  accent: '#00acd7',
+  accentLight: '#0081d7',
+  accentDark: '#bdd3d9',
+  text: '#212121',
+  gray: '#e5e5e5',
+  darkGray: '#e5e5e5',
+  textRed: '#EF5350',
+
+  info: '#039BE5',
+  success: '#7CB342',
+  warn: '#FB8C00',
+  error: '#D81B60',
+};
+
+export const DefaultTheme = DarkTheme;

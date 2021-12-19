@@ -1,6 +1,7 @@
 import { StringMap } from '@ranna-go/ranna-ts';
 import create from 'zustand';
 import LocalStorageUtil from 'util/localstorage';
+import { AppTheme } from 'theme/theme';
 
 export interface Store {
   spec: string;
@@ -20,6 +21,9 @@ export interface Store {
 
   apiKey: string;
   setApiKey: (v: string) => void;
+
+  theme: AppTheme;
+  setTheme: (v: AppTheme) => void;
 }
 
 export const useStore = create<Store>((set) => ({
@@ -42,5 +46,16 @@ export const useStore = create<Store>((set) => ({
   setApiKey: (apiKey) => {
     set({ apiKey });
     LocalStorageUtil.set('snippets.apiKey', apiKey);
+  },
+
+  theme: LocalStorageUtil.get(
+    'ranna.theme',
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? AppTheme.DARK
+      : AppTheme.LIGHT
+  )!,
+  setTheme: (theme) => {
+    set({ theme });
+    LocalStorageUtil.set('ranna.theme', theme);
   },
 }));
