@@ -87,7 +87,19 @@ export const MainRoute: React.FC = () => {
 
   useEffect(() => {
     if (!spec && specMap) {
-      setSpec(Object.keys(specMap)[0]);
+      const s = Object.keys(specMap)[0];
+      setSpec(s);
+    }
+
+    if (
+      specMap &&
+      spec &&
+      (!code ||
+        Object.values(specMap).some(
+          (s) => s.example === code.replaceAll('\r\n', '\n')
+        ))
+    ) {
+      setCode(specMap[spec].example);
     }
   }, [spec, specMap]);
 
