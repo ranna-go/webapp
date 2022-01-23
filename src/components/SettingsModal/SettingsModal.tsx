@@ -103,7 +103,7 @@ export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
         <TokenInputLabel>
           Snippets Token
           <a
-            href="https://app.snippets.ranna.zekro.de/"
+            href="https://app.snippets.ranna.dev/"
             target="_blank"
             rel="noreferrer"
           >
