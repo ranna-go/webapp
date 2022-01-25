@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@monaco-editor/react": "^4.3.1",
-    "@ranna-go/ranna-ts": "^1.4.6",
+    "@ranna-go/ranna-ts": "^1.7.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",

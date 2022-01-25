@@ -1,4 +1,9 @@
-import { APIError, ExecutionResponse, ResponseError } from '@ranna-go/ranna-ts';
+import {
+  APIError,
+  ExecutionRequest,
+  ExecutionResponse,
+  ResponseError,
+} from '@ranna-go/ranna-ts';
 import { NotificationType } from 'components/SnackBar';
 import { useSnackBar } from 'components/SnackBar/useSnackBar';
 import { useState } from 'react';
@@ -20,7 +25,7 @@ export function useCodeExec() {
           language: spec,
           arguments: args,
           environment: env,
-        },
+        } as ExecutionRequest,
         bypassCache
       );
       setResult(res);

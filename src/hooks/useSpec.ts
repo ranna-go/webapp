@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Ranna } from 'services/client';
 
 export const useSpec = () => {
-  const [spec, setSpec] = useState<SpecMap>();
+  const [spec, setSpec] = useState<SpecMap>({});
 
   useEffect(() => {
     Ranna.spec().then((s) => setSpec(s));

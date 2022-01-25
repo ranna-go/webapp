@@ -5,9 +5,9 @@ import { ExecButton } from './ExecButton';
 import { useState } from 'react';
 import { Select, Option } from 'components/Select';
 import { SpecMap } from '@ranna-go/ranna-ts';
-import { mapLang } from 'util/languages';
 import { useStore } from 'services/store';
 import { Info, InfoModel } from 'components/Info';
+import { displayName } from 'util/spec';
 
 interface Props {
   info?: InfoModel;
@@ -99,7 +99,7 @@ export const Header: React.FC<Props> = ({
       (s) =>
         ({
           value: s,
-          displayName: mapLang(s).display,
+          displayName: displayName(s, specMap[s]),
         } as Option)
     );
 

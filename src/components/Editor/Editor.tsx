@@ -1,7 +1,6 @@
 import MonacoEditor from '@monaco-editor/react';
 import { useStoredTheme } from 'hooks/useStoredTheme';
 import styled from 'styled-components';
-import { mapLang } from 'util/languages';
 
 interface Props {
   selectedLang: string;
@@ -32,7 +31,7 @@ export const Editor: React.FC<Props> = ({
   return (
     <Wrapper>
       <MonacoEditor
-        language={mapLang(selectedLang).editor}
+        language={selectedLang}
         theme={editorTheme}
         value={value}
         onChange={(v) => onChange(v!)}

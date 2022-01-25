@@ -137,7 +137,7 @@ export const MainRoute: React.FC = () => {
         <Editor
           value={code}
           onChange={setCode}
-          selectedLang={spec}
+          selectedLang={specMap[spec]?.language ?? spec}
           readOnly={isEmbedded}
         />
         <ResultViewer result={result} onClosing={reset} />
