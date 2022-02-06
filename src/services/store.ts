@@ -2,6 +2,8 @@ import { StringMap } from '@ranna-go/ranna-ts';
 import create from 'zustand';
 import LocalStorageUtil from 'util/localstorage';
 import { AppTheme } from 'theme/theme';
+import { RannaClient } from './rannaclient';
+import { newRannaClient } from './static';
 
 export interface Store {
   spec: string;
@@ -24,9 +26,14 @@ export interface Store {
 
   theme: AppTheme;
   setTheme: (v: AppTheme) => void;
+
+  useWS: boolean;
+  setUseWS: (v: boolean) => void;
+
+  rannaClient: RannaClient;
 }
 
-export const useStore = create<Store>((set) => ({
+export const useStore = create<Store>((set, get) => ({
   spec: '',
   setSpec: (spec) => set({ spec }),
 
@@ -58,4 +65,13 @@ export const useStore = create<Store>((set) => ({
     set({ theme });
     LocalStorageUtil.set('ranna.theme', theme);
   },
+
+  useWS: false,
+  setUseWS: (useWS) => {
+    get().rannaClient.close();
+    const rannaClient = newRannaClient(useWS);
+    set({ useWS, rannaClient });
+  },
+
+  rannaClient: newRannaClient(false),
 }));

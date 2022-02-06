@@ -1,8 +1,9 @@
 import { StringMap } from '@ranna-go/ranna-ts';
+import { Button } from 'components/Button';
 import { Input } from 'components/Input';
 import { CheckBox } from 'components/Input/CheckBox';
 import { TextBox } from 'components/Input/TextBox';
-import { Modal } from 'components/Modal';
+import { Controls, Modal } from 'components/Modal';
 import { ThemeSwitch } from 'components/ThemeSwitch';
 import { useEffect, useState } from 'react';
 import { useStore } from 'services/store';
@@ -47,8 +48,6 @@ export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
     setApiKey,
     env,
     setEnv,
-    theme,
-    setTheme,
   } = useStore();
 
   const [envInpt, setEnvInpt] = useState('');
@@ -75,7 +74,7 @@ export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
       heading={
         <HeadingContainer>
           <span>Settings</span>
-          <ThemeSwitch theme={theme} onSwitch={setTheme} />
+          <ThemeSwitch />
         </HeadingContainer>
       }
       onClosing={onClosing}
@@ -117,6 +116,9 @@ export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
           onInput={(e) => setApiKey(e.currentTarget.value)}
         />
       </ContentContainer>
+      <Controls>
+        <Button onClick={onClosing}>OK</Button>
+      </Controls>
     </Modal>
   );
 };

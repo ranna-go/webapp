@@ -2,19 +2,21 @@ import styled from 'styled-components';
 import { ReactComponent as Logo } from 'assets/icons/logo.svg';
 import { Button } from 'components/Button';
 import { ExecButton } from './ExecButton';
-import { useState } from 'react';
 import { Select, Option } from 'components/Select';
 import { SpecMap } from '@ranna-go/ranna-ts';
 import { useStore } from 'services/store';
 import { Info, InfoModel } from 'components/Info';
 import { displayName } from 'util/spec';
+import { Switch } from 'components/Switch';
 
 interface Props {
+  isActive?: boolean;
   info?: InfoModel;
   specMap?: SpecMap;
   isEmbedded?: boolean;
   onOpenSettings?: () => void;
-  onRun?: () => Promise<any>;
+  onExec?: () => void;
+  onStop?: () => void;
   onSnippet?: () => void;
 }
 
@@ -77,21 +79,24 @@ const RightContainer = styled.div`
   margin-left: auto;
 `;
 
+const WSIcon = styled.span`
+  font-size: 0.7em;
+  font-weight: 900;
+  padding-top: 0.3em;
+  color: ${(p) => p.theme.text};
+`;
+
 export const Header: React.FC<Props> = ({
   info,
   isEmbedded,
+  isActive = false,
   specMap = {},
   onOpenSettings = () => {},
-  onRun = async () => {},
+  onExec = () => {},
+  onStop,
   onSnippet = () => {},
 }) => {
-  const [active, setActive] = useState(false);
-  const { spec, setSpec, code } = useStore();
-
-  const _run = () => {
-    setActive(true);
-    onRun().finally(() => setActive(false));
-  };
+  const { spec, setSpec, code, useWS, setUseWS } = useStore();
 
   const _specOptions = Object.keys(specMap)
     .filter((s) => !specMap[s].use)
@@ -109,8 +114,9 @@ export const Header: React.FC<Props> = ({
         <>
           <FloatingExecButton
             disabled={!code || !spec}
-            active={active}
-            onActivate={_run}
+            active={isActive}
+            onActivate={onExec}
+            onStop={onStop}
           />
         </>
       )) || (
@@ -125,8 +131,9 @@ export const Header: React.FC<Props> = ({
           </LogoContainer>
           <ExecButton
             disabled={!code || !spec}
-            active={active}
-            onActivate={_run}
+            active={isActive}
+            onActivate={onExec}
+            onStop={onStop}
           />
           <Select
             value={spec}
@@ -136,6 +143,11 @@ export const Header: React.FC<Props> = ({
           <Button icon={'⚙️'} onClick={onOpenSettings}>
             Settings
           </Button>
+          <Switch
+            enabled={useWS}
+            onSwitch={(v) => setUseWS(v)}
+            icon={<WSIcon>WS</WSIcon>}
+          />
           <RightContainer>
             <Button icon={'🔗'} disabled={!code || !spec} onClick={onSnippet}>
               Share Snippet

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const BACKGROUND_ID = ':background-element';
 
-interface Props {
+export interface ModalProps {
   heading?: string | JSX.Element;
   onClosing?: () => void;
 }
@@ -22,8 +22,7 @@ const Container = styled.div`
   background-color: ${(p) => p.theme.accentDark};
   padding: 1rem;
   border-radius: 0.5rem;
-  margin: auto;
-  margin-top: 20vh;
+  margin: 20vh 5vw auto 5vw;
 
   // Prohibit collissions into bottom edge
   // when on low-height screens.
@@ -36,7 +35,7 @@ const Heading = styled.h2`
   margin-top: 0;
 `;
 
-export const Modal: React.FC<Props> = ({
+export const Modal: React.FC<ModalProps> = ({
   children,
   heading,
   onClosing = () => {},

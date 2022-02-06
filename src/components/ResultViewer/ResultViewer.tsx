@@ -1,11 +1,14 @@
-import { Result } from 'hooks/useCodeExec';
 import styled from 'styled-components';
 import { TransWithMuchEzCB } from 'styles/default';
 import { linebreak } from 'util/format';
 import { CloseButton } from './CloseButton';
 import { format } from 'date-fns';
+import { Result } from 'types/restapi';
 
 interface Props {
+  stdOut: string;
+  stdErr: string;
+  isRunning: boolean;
   result?: Result;
   onClosing?: () => void;
 }
@@ -70,24 +73,33 @@ const CacheHint = styled(Hint)`
 `;
 
 export const ResultViewer: React.FC<Props> = ({
+  stdOut,
+  stdErr,
+  isRunning,
   result,
   onClosing = () => {},
 }) => {
-  const { stdout, stderr, from_cache, cache_date } = result ?? {};
+  const { from_cache, cache_date } = result ?? {};
+
+  const _show = isRunning || !!stdOut || !!stdErr || !!result;
+
+  const emptyHint = (isRunning && <Hint>Awaiting output...</Hint>) || (
+    <Hint>No output.</Hint>
+  );
 
   return (
-    <Container show={!!result}>
+    <Container show={_show}>
       <div>
-        {stdout && (
+        {stdOut && (
           <OutputContainer>
             <PartHeading>stdout</PartHeading>
-            <span>{linebreak(stdout)}</span>
+            <span>{linebreak(stdOut)}</span>
           </OutputContainer>
         )}
-        {stderr && (
+        {stdErr && (
           <ErrContaienr>
             <PartHeading>stderr</PartHeading>
-            <span>{linebreak(stderr)}</span>
+            <span>{linebreak(stdErr)}</span>
           </ErrContaienr>
         )}
         {from_cache && (
@@ -96,7 +108,7 @@ export const ResultViewer: React.FC<Props> = ({
             {format(new Date(cache_date!), 'yyyy/MM/dd - HH:mm:ss')}).
           </CacheHint>
         )}
-        {!stdout && !stderr && <Hint>No output.</Hint>}
+        {!stdOut && !stdErr && emptyHint}
       </div>
       <CloseButton onClick={onClosing} />
     </Container>
