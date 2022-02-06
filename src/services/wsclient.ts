@@ -22,31 +22,31 @@ export class RannaWSClient extends RannaHttpClient implements RannaClient {
 
   override exec(req: ExecutionRequest, _?: boolean): Observable<Event<any>> {
     const nonce = this.randomNonce;
-    const nondeFilter = getNonceFilter(nonce);
+    const nonceFilter = getNonceFilter(nonce);
     return new Observable((subscriber) => {
       const unreg: UnregisterFunc[] = [];
       unreg.push(
         this.wsClient.onEvent(
           EventCode.ERROR,
-          nondeFilter((e) => subscriber.error(e))
+          nonceFilter((e) => subscriber.error(e))
         )
       );
       unreg.push(
         this.wsClient.onEvent(
           EventCode.SPAWN,
-          nondeFilter((e) => subscriber.next(e))
+          nonceFilter((e) => subscriber.next(e))
         )
       );
       unreg.push(
         this.wsClient.onEvent(
           EventCode.LOG,
-          nondeFilter((e) => subscriber.next(e))
+          nonceFilter((e) => subscriber.next(e))
         )
       );
       unreg.push(
         this.wsClient.onEvent(
           EventCode.STOP,
-          nondeFilter((e) => {
+          nonceFilter((e) => {
             subscriber.next(e);
             subscriber.complete();
             unreg.forEach((f) => f());
