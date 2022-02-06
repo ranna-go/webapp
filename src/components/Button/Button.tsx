@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { ControlStyle } from 'styles/controls';
 
+const SWITCH_WIDTH = '52em';
+
 type ChildrenWrapperProps = {
   ignoreScaling?: boolean;
   hasIcon?: boolean;
@@ -33,7 +35,7 @@ const StyledButton = styled.button<ButtonProps>`
 const ChildrenWrapper = styled.span<ChildrenWrapperProps>`
   margin-left: ${(p) => (p.hasIcon ? '0.5em' : '0')};
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: ${SWITCH_WIDTH}) {
     display: ${(p) => (p.ignoreScaling ? '' : 'none')};
   }
 `;

@@ -8,6 +8,7 @@ import { useStore } from 'services/store';
 import { Info, InfoModel } from 'components/Info';
 import { displayName } from 'util/spec';
 import { Switch } from 'components/Switch';
+import { DesktopeView, MobileView } from 'components/ResponsiveViews';
 
 interface Props {
   isActive?: boolean;
@@ -47,7 +48,7 @@ const LogoContainer = styled.div`
   }
 `;
 
-const Container = styled.div`
+const Container = styled.header`
   position: relative;
   width: 100%;
   height: fit-content;
@@ -60,10 +61,15 @@ const Container = styled.div`
 
   > * {
     margin-right: 1rem;
+  }
+`;
 
-    &:last-child {
-      margin-right: 0;
-    }
+const MobileSelect = styled(MobileView)`
+  margin-top: 1em;
+  margin-right: 0;
+  &,
+  & > * {
+    width: 100%;
   }
 `;
 
@@ -77,6 +83,7 @@ const FloatingExecButton = styled(ExecButton)`
 
 const RightContainer = styled.div`
   margin-left: auto;
+  margin-right: 0;
 `;
 
 const WSIcon = styled.span`
@@ -135,11 +142,13 @@ export const Header: React.FC<Props> = ({
             onActivate={onExec}
             onStop={onStop}
           />
-          <Select
-            value={spec}
-            options={_specOptions}
-            onChange={(e) => setSpec(e.currentTarget.value)}
-          />
+          <DesktopeView>
+            <Select
+              value={spec}
+              options={_specOptions}
+              onChange={(e) => setSpec(e.currentTarget.value)}
+            />
+          </DesktopeView>
           <Button icon={'⚙️'} onClick={onOpenSettings}>
             Settings
           </Button>
@@ -153,6 +162,13 @@ export const Header: React.FC<Props> = ({
               Share Snippet
             </Button>
           </RightContainer>
+          <MobileSelect>
+            <Select
+              value={spec}
+              options={_specOptions}
+              onChange={(e) => setSpec(e.currentTarget.value)}
+            />
+          </MobileSelect>
         </Container>
       )}
     </>

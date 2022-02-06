@@ -44,6 +44,7 @@ const Container = styled.div<{ show: boolean }>`
     width: 100%;
     max-width: 100%;
     height: fit-content;
+    min-height: 40vh;
     max-height: 50vh;
     overflow-y: auto;
   }
