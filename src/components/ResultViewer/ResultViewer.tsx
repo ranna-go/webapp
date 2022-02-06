@@ -28,6 +28,7 @@ const Container = styled.div<{ show: boolean }>`
   justify-content: space-between;
   overflow: hidden;
   word-break: break-all;
+  overflow-y: auto;
 
   ${TransWithMuchEzCB}
   transition: all 0.25s;
@@ -46,6 +47,11 @@ const Container = styled.div<{ show: boolean }>`
     max-height: 50vh;
     overflow-y: auto;
   }
+`;
+
+const StyledCloseButton = styled(CloseButton)`
+  position: sticky;
+  top: 0;
 `;
 
 const PartHeading = styled.p`
@@ -110,7 +116,7 @@ export const ResultViewer: React.FC<Props> = ({
         )}
         {!stdOut && !stdErr && emptyHint}
       </div>
-      <CloseButton onClick={onClosing} />
+      <StyledCloseButton onClick={onClosing} />
     </Container>
   );
 };
