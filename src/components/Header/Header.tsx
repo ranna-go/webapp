@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { ReactComponent as Logo } from 'assets/icons/logo.svg';
 import { Button } from 'components/Button';
 import { ExecButton } from './ExecButton';
-import { useState } from 'react';
 import { Select, Option } from 'components/Select';
 import { SpecMap } from '@ranna-go/ranna-ts';
 import { useStore } from 'services/store';
@@ -10,11 +9,12 @@ import { Info, InfoModel } from 'components/Info';
 import { displayName } from 'util/spec';
 
 interface Props {
+  isActive?: boolean;
   info?: InfoModel;
   specMap?: SpecMap;
   isEmbedded?: boolean;
   onOpenSettings?: () => void;
-  onRun?: () => Promise<any>;
+  onExec?: () => void;
   onSnippet?: () => void;
 }
 
@@ -80,18 +80,13 @@ const RightContainer = styled.div`
 export const Header: React.FC<Props> = ({
   info,
   isEmbedded,
+  isActive = false,
   specMap = {},
   onOpenSettings = () => {},
-  onRun = async () => {},
+  onExec = () => {},
   onSnippet = () => {},
 }) => {
-  const [active, setActive] = useState(false);
   const { spec, setSpec, code } = useStore();
-
-  const _run = () => {
-    setActive(true);
-    onRun().finally(() => setActive(false));
-  };
 
   const _specOptions = Object.keys(specMap)
     .filter((s) => !specMap[s].use)
@@ -109,8 +104,8 @@ export const Header: React.FC<Props> = ({
         <>
           <FloatingExecButton
             disabled={!code || !spec}
-            active={active}
-            onActivate={_run}
+            active={isActive}
+            onActivate={onExec}
           />
         </>
       )) || (
@@ -125,8 +120,8 @@ export const Header: React.FC<Props> = ({
           </LogoContainer>
           <ExecButton
             disabled={!code || !spec}
-            active={active}
-            onActivate={_run}
+            active={isActive}
+            onActivate={onExec}
           />
           <Select
             value={spec}

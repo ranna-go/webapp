@@ -1,25 +1,16 @@
-import {
-  APIError,
-  ExecutionRequest,
-  ExecutionResponse,
-  ResponseError,
-} from '@ranna-go/ranna-ts';
+import { Event, ExecutionRequest, WsError } from '@ranna-go/ranna-ts';
 import { NotificationType } from 'components/SnackBar';
 import { useSnackBar } from 'components/SnackBar/useSnackBar';
-import { useState } from 'react';
-import { Ranna } from 'services/client';
+import { catchError, filter, of, tap } from 'rxjs';
 import { useStore } from 'services/store';
 
-export type Result = ExecutionResponse;
-
 export function useCodeExec() {
-  const { code, spec, args, env, bypassCache } = useStore();
-  const [result, setResult] = useState<Result>();
+  const { rannaClient, code, spec, args, env, bypassCache } = useStore();
   const { show } = useSnackBar();
 
-  const run = async () => {
-    try {
-      const res = await Ranna.exec(
+  const run = () =>
+    rannaClient
+      .exec(
         {
           code,
           language: spec,
@@ -27,57 +18,55 @@ export function useCodeExec() {
           environment: env,
         } as ExecutionRequest,
         bypassCache
+      )
+      .pipe(
+        catchError((e) => handleError(e)),
+        filter((e) => !!e),
+        tap((e) => console.log('tap', e))
       );
-      setResult(res);
-    } catch (e: any) {
-      if (e instanceof ResponseError) {
-        if (e.response.status === 429) {
-          show(
-            <span>
-              You are being rate limited.
-              <br />
-              Please try again in a few seconds.
-            </span>,
-            NotificationType.ERROR
-          );
-        } else {
-          show(
-            <span>
-              Request failed unexpectedly. ({e.response.status})
-              {e.message && (
-                <>
-                  <br />
-                  <code>{e.message}</code>
-                </>
-              )}
-            </span>,
-            NotificationType.ERROR
-          );
-        }
-      } else if (e instanceof APIError) {
-        show(
-          <span>
-            Code execution failed. ({e.code})
-            {e.message && (
-              <>
-                <br />
-                <code>{e.message}</code>
-              </>
-            )}
-          </span>,
-          NotificationType.ERROR
-        );
-      }
-    }
-  };
 
-  const reset = () => {
-    setResult(undefined);
+  const handleError = (event: Event<WsError>) => {
+    const err = event.data;
+    if (err.code === 429) {
+      show(
+        <span>
+          You are being rate limited.
+          <br />
+          Please try again in a few seconds.
+        </span>,
+        NotificationType.ERROR
+      );
+    } else if (err.code >= 400 && err.code < 500) {
+      show(
+        <span>
+          Code execution failed. ({err.code})
+          {err.message && (
+            <>
+              <br />
+              <code>{err.message}</code>
+            </>
+          )}
+        </span>,
+        NotificationType.ERROR
+      );
+    } else {
+      show(
+        <span>
+          Request failed unexpectedly. ({err.code})
+          {err.message && (
+            <>
+              <br />
+              <code>{err.message}</code>
+            </>
+          )}
+        </span>,
+        NotificationType.ERROR
+      );
+    }
+    throw err;
   };
 
   return {
-    result,
     run,
-    reset,
   };
 }

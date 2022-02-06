@@ -10,11 +10,12 @@ import { ResultViewer } from 'components/ResultViewer';
 import { NotificationType, SnackBar } from 'components/SnackBar';
 import { useSnackBar } from 'components/SnackBar/useSnackBar';
 import { useQuery } from 'hooks/useQuery';
-import { Snippets } from 'services/client';
-import { Snippet } from '@ranna-go/ranna-ts';
+import { Snippets } from 'services/static';
+import { EventCode, LogData, Snippet } from '@ranna-go/ranna-ts';
 import { SnippetNotification } from './SnippetNotification';
 import { useInfo } from 'hooks/useInfo';
 import { useIsEmbedded } from 'hooks/useIsEmbedded';
+import { Result } from 'types/restapi';
 
 const Container = styled.div`
   width: 100vw;
@@ -46,13 +47,18 @@ const EmbedFooter = styled.div`
 export const MainRoute: React.FC = () => {
   const specMap = useSpec();
   const { code, setCode, spec, setSpec, apiKey } = useStore();
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [snippet, setSnippet] = useQuery('s');
   const { show } = useSnackBar();
-  const { run, result, reset } = useCodeExec();
+  const { run } = useCodeExec();
   const systemInfo = useInfo();
-  const lastSnippetRef = useRef<string>('');
   const isEmbedded = useIsEmbedded();
+
+  const lastSnippetRef = useRef<string>('');
+  const [isRunning, setIsRunning] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [stdOut, setStdOut] = useState('');
+  const [stdErr, setStdErr] = useState('');
+  const [result, setResult] = useState<Result>();
 
   useEffect(() => {
     if (snippet) {
@@ -103,6 +109,41 @@ export const MainRoute: React.FC = () => {
     }
   }, [spec, specMap]);
 
+  const _run = () => {
+    _reset();
+    run().subscribe({
+      error() {
+        setIsRunning(false);
+      },
+      complete() {
+        setIsRunning(false);
+      },
+      next(e) {
+        switch (e?.code) {
+          case EventCode.SPAWN:
+            setIsRunning(true);
+            break;
+          case EventCode.LOG:
+            {
+              const data = e.data as LogData;
+              if (data.stdout) setStdOut((v) => v + data.stdout);
+              if (data.stderr) setStdOut((v) => v + data.stderr);
+            }
+            break;
+          case EventCode.STOP:
+            setResult(e.data as Result);
+            break;
+        }
+      },
+    });
+  };
+
+  const _reset = () => {
+    setStdOut('');
+    setStdErr('');
+    setResult(undefined);
+  };
+
   const _postSnippet = async () => {
     if (snippet && code === lastSnippetRef.current) {
       show(<SnippetNotification ident={snippet} />, NotificationType.INFO, 0);
@@ -126,7 +167,8 @@ export const MainRoute: React.FC = () => {
         onOpenSettings={() => setSettingsOpen(true)}
         specMap={specMap}
         info={systemInfo}
-        onRun={run}
+        isActive={isRunning}
+        onExec={_run}
         onSnippet={_postSnippet}
         isEmbedded={isEmbedded}
       />
@@ -140,7 +182,13 @@ export const MainRoute: React.FC = () => {
           selectedLang={specMap[spec]?.language ?? spec}
           readOnly={isEmbedded}
         />
-        <ResultViewer result={result} onClosing={reset} />
+        <ResultViewer
+          isRunning={isRunning}
+          stdOut={stdOut}
+          stdErr={stdErr}
+          result={result}
+          onClosing={_reset}
+        />
       </EditorContainer>
       {isEmbedded && (
         <EmbedFooter>
