@@ -75,7 +75,7 @@ export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
       heading={
         <HeadingContainer>
           <span>Settings</span>
-          <ThemeSwitch theme={theme} onSwitch={setTheme} />
+          <ThemeSwitch />
         </HeadingContainer>
       }
       onClosing={onClosing}
