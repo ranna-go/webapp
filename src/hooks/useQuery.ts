@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getQueryParam, setQueryParam } from 'util/query';
 
 export function useQuery(
   key: string,
@@ -12,14 +13,4 @@ export function useQuery(
   };
 
   return [v, set];
-}
-
-function getQueryParam(key: string): string | null {
-  return new URLSearchParams(window.location.search).get(key);
-}
-
-function setQueryParam(key: string, v: string) {
-  const sp = new URLSearchParams(window.location.search);
-  sp.set(key, v);
-  window.history.pushState('', '', `?${sp.toString()}`);
 }

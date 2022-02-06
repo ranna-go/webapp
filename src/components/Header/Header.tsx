@@ -7,6 +7,7 @@ import { SpecMap } from '@ranna-go/ranna-ts';
 import { useStore } from 'services/store';
 import { Info, InfoModel } from 'components/Info';
 import { displayName } from 'util/spec';
+import { Switch } from 'components/Switch';
 
 interface Props {
   isActive?: boolean;
@@ -15,6 +16,7 @@ interface Props {
   isEmbedded?: boolean;
   onOpenSettings?: () => void;
   onExec?: () => void;
+  onStop?: () => void;
   onSnippet?: () => void;
 }
 
@@ -77,6 +79,13 @@ const RightContainer = styled.div`
   margin-left: auto;
 `;
 
+const WSIcon = styled.span`
+  font-size: 0.7em;
+  font-weight: 900;
+  padding-top: 0.3em;
+  color: ${(p) => p.theme.text};
+`;
+
 export const Header: React.FC<Props> = ({
   info,
   isEmbedded,
@@ -84,9 +93,10 @@ export const Header: React.FC<Props> = ({
   specMap = {},
   onOpenSettings = () => {},
   onExec = () => {},
+  onStop,
   onSnippet = () => {},
 }) => {
-  const { spec, setSpec, code } = useStore();
+  const { spec, setSpec, code, useWS, setUseWS } = useStore();
 
   const _specOptions = Object.keys(specMap)
     .filter((s) => !specMap[s].use)
@@ -106,6 +116,7 @@ export const Header: React.FC<Props> = ({
             disabled={!code || !spec}
             active={isActive}
             onActivate={onExec}
+            onStop={onStop}
           />
         </>
       )) || (
@@ -122,6 +133,7 @@ export const Header: React.FC<Props> = ({
             disabled={!code || !spec}
             active={isActive}
             onActivate={onExec}
+            onStop={onStop}
           />
           <Select
             value={spec}
@@ -131,6 +143,11 @@ export const Header: React.FC<Props> = ({
           <Button icon={'⚙️'} onClick={onOpenSettings}>
             Settings
           </Button>
+          <Switch
+            enabled={useWS}
+            onSwitch={(v) => setUseWS(v)}
+            icon={<WSIcon>WS</WSIcon>}
+          />
           <RightContainer>
             <Button icon={'🔗'} disabled={!code || !spec} onClick={onSnippet}>
               Share Snippet

@@ -16,6 +16,8 @@ import { SnippetNotification } from './SnippetNotification';
 import { useInfo } from 'hooks/useInfo';
 import { useIsEmbedded } from 'hooks/useIsEmbedded';
 import { Result } from 'types/restapi';
+import { useInitAPIClient } from 'hooks/useInitAPIClient';
+import { WSInfoModal } from 'components/WSInfoModal';
 
 const Container = styled.div`
   width: 100vw;
@@ -45,11 +47,13 @@ const EmbedFooter = styled.div`
 `;
 
 export const MainRoute: React.FC = () => {
+  useInitAPIClient();
+
   const specMap = useSpec();
-  const { code, setCode, spec, setSpec, apiKey } = useStore();
+  const { code, setCode, spec, setSpec, apiKey, useWS } = useStore();
   const [snippet, setSnippet] = useQuery('s');
   const { show } = useSnackBar();
-  const { run } = useCodeExec();
+  const { run, stop } = useCodeExec();
   const systemInfo = useInfo();
   const isEmbedded = useIsEmbedded();
 
@@ -169,6 +173,7 @@ export const MainRoute: React.FC = () => {
         info={systemInfo}
         isActive={isRunning}
         onExec={_run}
+        onStop={useWS ? stop : undefined}
         onSnippet={_postSnippet}
         isEmbedded={isEmbedded}
       />
@@ -201,6 +206,7 @@ export const MainRoute: React.FC = () => {
         </EmbedFooter>
       )}
       <SnackBar />
+      <WSInfoModal />
     </Container>
   );
 };

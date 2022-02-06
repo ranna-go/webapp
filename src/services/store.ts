@@ -33,7 +33,7 @@ export interface Store {
   rannaClient: RannaClient;
 }
 
-export const useStore = create<Store>((set) => ({
+export const useStore = create<Store>((set, get) => ({
   spec: '',
   setSpec: (spec) => set({ spec }),
 
@@ -68,9 +68,10 @@ export const useStore = create<Store>((set) => ({
 
   useWS: false,
   setUseWS: (useWS) => {
+    get().rannaClient.close();
     const rannaClient = newRannaClient(useWS);
     set({ useWS, rannaClient });
   },
 
-  rannaClient: newRannaClient(true),
+  rannaClient: newRannaClient(false),
 }));

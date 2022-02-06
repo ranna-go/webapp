@@ -1,4 +1,4 @@
-import { Client, SnippetsClient } from '@ranna-go/ranna-ts';
+import { SnippetsClient } from '@ranna-go/ranna-ts';
 import { RannaHttpClient } from './httpclient';
 import { RannaClient } from './rannaclient';
 import { RannaWSClient } from './wsclient';

@@ -1,10 +1,18 @@
-import { Event, ExecutionRequest, WsError } from '@ranna-go/ranna-ts';
+import {
+  Event,
+  EventCode,
+  ExecutionRequest,
+  RunID,
+  WsError,
+} from '@ranna-go/ranna-ts';
 import { NotificationType } from 'components/SnackBar';
 import { useSnackBar } from 'components/SnackBar/useSnackBar';
-import { catchError, filter, of, tap } from 'rxjs';
+import { useState } from 'react';
+import { catchError, filter, tap } from 'rxjs';
 import { useStore } from 'services/store';
 
 export function useCodeExec() {
+  const [runID, setRunID] = useState('');
   const { rannaClient, code, spec, args, env, bypassCache } = useStore();
   const { show } = useSnackBar();
 
@@ -20,12 +28,22 @@ export function useCodeExec() {
         bypassCache
       )
       .pipe(
-        catchError((e) => handleError(e)),
+        catchError((e) => _handleError(e)),
         filter((e) => !!e),
-        tap((e) => console.log('tap', e))
+        tap((e) => {
+          if (e.code === EventCode.SPAWN) setRunID((e.data as RunID).runid);
+          if (e.code === EventCode.STOP) setRunID('');
+        })
       );
 
-  const handleError = (event: Event<WsError>) => {
+  const stop = () => {
+    if (!!runID) {
+      rannaClient.stop(runID);
+      setRunID('');
+    }
+  };
+
+  const _handleError = (event: Event<WsError>) => {
     const err = event.data;
     if (err.code === 429) {
       show(
@@ -68,5 +86,7 @@ export function useCodeExec() {
 
   return {
     run,
+    stop,
+    runID,
   };
 }

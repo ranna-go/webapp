@@ -22,17 +22,19 @@ const Container = styled.button<{ enabled: boolean }>`
   display: flex;
   padding: 0;
   outline-style: solid;
-  outline-color: ${(p) => p.theme.accent};
+  outline-color: ${(p) => p.theme.accent}${(p) => (p.enabled ? '80' : '00')};
   outline-width: ${(p) => (p.enabled ? '3px' : '0px')};
+  transition: outline 0.2s ease;
 `;
 
-const Nob = styled.div<{ enabled: boolean }>`
+export const Nob = styled.div<{ enabled: boolean }>`
   height: ${HEIGHT};
   width: ${HEIGHT};
   border-radius: ${HEIGHT};
   background-color: ${(p) => p.theme.accent};
   margin-left: ${(p) => (p.enabled ? '50%' : '0%')};
   position: relative;
+  filter: grayscale(${(p) => (p.enabled ? '0' : '0.75')});
 
   &,
   > * {

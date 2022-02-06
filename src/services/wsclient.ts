@@ -58,6 +58,16 @@ export class RannaWSClient extends RannaHttpClient implements RannaClient {
     });
   }
 
+  close(): void {
+    this.wsClient.close();
+  }
+
+  stop(runid: string): void {
+    this.wsClient.op(OpCode.KILL, {
+      runid,
+    });
+  }
+
   private get randomNonce(): number {
     return Math.floor(Math.random() * 10000);
   }

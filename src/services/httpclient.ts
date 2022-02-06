@@ -62,6 +62,11 @@ export class RannaHttpClient implements RannaClient {
         .catch((err) => subscriber.error(mapError(err)));
     });
   }
+
+  // Unimplemented
+
+  close(): void {}
+  stop(id: string): void {}
 }
 
 function mapError(err: Error): Event<WsError> {

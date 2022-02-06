@@ -7,4 +7,6 @@ export interface RannaClient {
   spec(): Promise<SpecMap>;
   info(): Promise<SystemInfo>;
   exec(req: ExecutionRequest, bypassCache?: boolean): Observable<Event<any>>;
+  stop(id: string): void;
+  close(): void;
 }
