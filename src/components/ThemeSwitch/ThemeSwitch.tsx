@@ -10,7 +10,7 @@ const StyledSwitch = styled(Switch)`
 `;
 
 export const ThemeSwitch: React.FC<{}> = () => {
-  const { theme, setTheme } = useStore();
+  const [theme, setTheme] = useStore((s) => [s.theme, s.setTheme]);
   const _onSwitch = (e: boolean) =>
     setTheme(e ? AppTheme.LIGHT : AppTheme.DARK);
   return (

@@ -3,7 +3,7 @@ import { useStore } from 'services/store';
 import { useQuery } from './useQuery';
 
 export const useInitAPIClient = () => {
-  const { useWS, setUseWS } = useStore();
+  const [useWS, setUseWS] = useStore((s) => [s.useWS, s.setUseWS]);
   const [wsQuery, setWsQuery] = useQuery('ws');
 
   useEffect(() => {

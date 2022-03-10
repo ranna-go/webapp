@@ -103,7 +103,13 @@ export const Header: React.FC<Props> = ({
   onStop,
   onSnippet = () => {},
 }) => {
-  const { spec, setSpec, code, useWS, setUseWS } = useStore();
+  const [spec, setSpec, code, useWS, setUseWS] = useStore((s) => [
+    s.spec,
+    s.setSpec,
+    s.code,
+    s.useWS,
+    s.setUseWS,
+  ]);
 
   const _specOptions = Object.keys(specMap)
     .filter((s) => !specMap[s].use)

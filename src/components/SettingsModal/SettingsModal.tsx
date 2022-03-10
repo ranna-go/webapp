@@ -39,7 +39,7 @@ const HeadingContainer = styled.div`
 `;
 
 export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
-  const {
+  const [
     args,
     setArgs,
     bypassCache,
@@ -48,7 +48,16 @@ export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
     setApiKey,
     env,
     setEnv,
-  } = useStore();
+  ] = useStore((s) => [
+    s.args,
+    s.setArgs,
+    s.bypassCache,
+    s.setBypassCache,
+    s.apiKey,
+    s.setApiKey,
+    s.env,
+    s.setEnv,
+  ]);
 
   const [envInpt, setEnvInpt] = useState('');
 

@@ -51,7 +51,14 @@ export const MainRoute: React.FC = () => {
   useInitAPIClient();
 
   const specMap = useSpec();
-  const { code, setCode, spec, setSpec, apiKey, useWS } = useStore();
+  const [code, setCode, spec, setSpec, apiKey, useWS] = useStore((s) => [
+    s.code,
+    s.setCode,
+    s.spec,
+    s.setSpec,
+    s.apiKey,
+    s.useWS,
+  ]);
   const [snippet, setSnippet] = useQuery('s');
   const { show } = useSnackBar();
   const { run, stop } = useCodeExec();

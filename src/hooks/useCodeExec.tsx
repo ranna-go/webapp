@@ -13,7 +13,14 @@ import { useStore } from 'services/store';
 
 export function useCodeExec() {
   const [runID, setRunID] = useState('');
-  const { rannaClient, code, spec, args, env, bypassCache } = useStore();
+  const [rannaClient, code, spec, args, env, bypassCache] = useStore((s) => [
+    s.rannaClient,
+    s.code,
+    s.spec,
+    s.args,
+    s.env,
+    s.bypassCache,
+  ]);
   const { show } = useSnackBar();
 
   const run = () =>
