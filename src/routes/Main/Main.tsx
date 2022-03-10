@@ -18,7 +18,6 @@ import { useIsEmbedded } from 'hooks/useIsEmbedded';
 import { Result } from 'types/restapi';
 import { useInitAPIClient } from 'hooks/useInitAPIClient';
 import { WSInfoModal } from 'components/WSInfoModal';
-import { MobileView } from 'components/ResponsiveViews';
 
 const Container = styled.div`
   width: 100vw;
