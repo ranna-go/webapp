@@ -27,10 +27,10 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: 'Install Dependencies'
-      run: npm install
+      run: yarn
 
     - name: 'Build Static Content'
-      run: CI=false npm run build
+      run: yarn run build
       env:
         REACT_APP_RANNA_ENDPOINT: "https://public.ranna.dev"
         REACT_APP_SNIPPETS_ENDPOINT: "https://snippets.ranna.dev"
