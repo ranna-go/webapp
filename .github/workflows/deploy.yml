@@ -3,41 +3,39 @@ name: Deploy Pages
 on:
   push:
     branches:
-     - 'master'
+      - 'master'
 
 jobs:
-
   deploy:
     name: 'Deploy to Pages'
     runs-on: 'ubuntu-latest'
 
     steps:
+      - name: 'Setup Node'
+        uses: actions/setup-node@v1
+        with:
+          node-version: '20.x'
 
-    - name: 'Setup Node'
-      uses: actions/setup-node@v1
-      with:
-        node-version: '15.x'
+      - name: 'Checkout Code'
+        uses: actions/checkout@v2
 
-    - name: 'Checkout Code'
-      uses: actions/checkout@v2
+      - name: Login to GPR
+        uses: jgierer12/npm-auth-gpr@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Login to GPR
-      uses: jgierer12/npm-auth-gpr@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Install Dependencies'
+        run: yarn
 
-    - name: 'Install Dependencies'
-      run: yarn
+      - name: 'Build Static Content'
+        run: yarn run build
+        env:
+          REACT_APP_RANNA_ENDPOINT: 'https://public.ranna.dev'
+          REACT_APP_SNIPPETS_ENDPOINT: 'https://snippets.ranna.dev'
 
-    - name: 'Build Static Content'
-      run: yarn run build
-      env:
-        REACT_APP_RANNA_ENDPOINT: "https://public.ranna.dev"
-        REACT_APP_SNIPPETS_ENDPOINT: "https://snippets.ranna.dev"
-
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build
-        cname: app.ranna.dev
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          cname: app.ranna.dev
