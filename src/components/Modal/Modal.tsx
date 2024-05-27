@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 const BACKGROUND_ID = ':background-element';
 
-export interface ModalProps {
+export type ModalProps = React.PropsWithChildren & {
   heading?: string | JSX.Element;
   onClosing?: () => void;
-}
+};
 
 const Background = styled.div`
   position: absolute;

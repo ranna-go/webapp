@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
 import { BorderRadius } from 'styles/default';
 import { Input } from '.';
+import React from 'react';
+import styled from 'styled-components';
 
-type Props = React.InputHTMLAttributes<any> & {};
+type Props = React.PropsWithChildren & React.InputHTMLAttributes<any> & {};
 
 const StyledLabel = styled.label`
   ${BorderRadius}

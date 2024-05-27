@@ -1,6 +1,7 @@
+import { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 
-interface Props {}
+type Props = PropsWithChildren & {};
 
 const Container = styled.div`
   display: flex;

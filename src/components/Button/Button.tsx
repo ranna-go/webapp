@@ -1,6 +1,6 @@
+import { ControlStyle } from 'styles/controls';
 import React from 'react';
 import styled from 'styled-components';
-import { ControlStyle } from 'styles/controls';
 
 const SWITCH_WIDTH = '52em';
 
@@ -14,7 +14,9 @@ type ButtonProps = ChildrenWrapperProps & {
   icon?: string | JSX.Element;
 };
 
-export type Props = React.ButtonHTMLAttributes<any> & ButtonProps;
+export type Props = React.PropsWithChildren &
+  React.ButtonHTMLAttributes<any> &
+  ButtonProps;
 
 const StyledButton = styled.button<ButtonProps>`
   ${ControlStyle}
