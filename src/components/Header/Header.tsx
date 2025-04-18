@@ -1,14 +1,16 @@
-import styled from 'styled-components';
-import { ReactComponent as Logo } from 'assets/icons/logo.svg';
+import { DesktopeView, MobileView } from 'components/ResponsiveViews';
+import { Info, InfoModel } from 'components/Info';
+import { Option, Select } from 'components/Select';
+
 import { Button } from 'components/Button';
 import { ExecButton } from './ExecButton';
-import { Select, Option } from 'components/Select';
+import { ReactComponent as Logo } from 'assets/icons/logo.svg';
 import { SpecMap } from '@ranna-go/ranna-ts';
-import { useStore } from 'services/store';
-import { Info, InfoModel } from 'components/Info';
-import { displayName } from 'util/spec';
 import { Switch } from 'components/Switch';
-import { DesktopeView, MobileView } from 'components/ResponsiveViews';
+import { displayName } from 'util/spec';
+import styled from 'styled-components';
+import { useShallow } from 'zustand/react/shallow';
+import { useStore } from 'services/store';
 
 interface Props {
   isActive?: boolean;
@@ -103,13 +105,9 @@ export const Header: React.FC<Props> = ({
   onStop,
   onSnippet = () => {},
 }) => {
-  const [spec, setSpec, code, useWS, setUseWS] = useStore((s) => [
-    s.spec,
-    s.setSpec,
-    s.code,
-    s.useWS,
-    s.setUseWS,
-  ]);
+  const [spec, setSpec, code, useWS, setUseWS] = useStore(
+    useShallow((s) => [s.spec, s.setSpec, s.code, s.useWS, s.setUseWS])
+  );
 
   const _specOptions = Object.keys(specMap)
     .filter((s) => !specMap[s].use)

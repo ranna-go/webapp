@@ -1,23 +1,25 @@
-import styled from 'styled-components';
-import { Header } from 'components/Header';
-import { useSpec } from 'hooks/useSpec';
-import { Editor } from 'components/Editor';
-import { useEffect, useRef, useState } from 'react';
-import { SettingsModal } from 'components/SettingsModal';
-import { useStore } from 'services/store';
-import { useCodeExec } from 'hooks/useCodeExec';
-import { ResultViewer } from 'components/ResultViewer';
-import { NotificationType, SnackBar } from 'components/SnackBar';
-import { useSnackBar } from 'components/SnackBar/useSnackBar';
-import { useQuery } from 'hooks/useQuery';
-import { Snippets } from 'services/static';
 import { EventCode, LogData, Snippet } from '@ranna-go/ranna-ts';
-import { SnippetNotification } from './SnippetNotification';
-import { useInfo } from 'hooks/useInfo';
-import { useIsEmbedded } from 'hooks/useIsEmbedded';
+import { NotificationType, SnackBar } from 'components/SnackBar';
+import { useEffect, useRef, useState } from 'react';
+
+import { Editor } from 'components/Editor';
+import { Header } from 'components/Header';
 import { Result } from 'types/restapi';
-import { useInitAPIClient } from 'hooks/useInitAPIClient';
+import { ResultViewer } from 'components/ResultViewer';
+import { SettingsModal } from 'components/SettingsModal';
+import { SnippetNotification } from './SnippetNotification';
+import { Snippets } from 'services/static';
 import { WSInfoModal } from 'components/WSInfoModal';
+import styled from 'styled-components';
+import { useCodeExec } from 'hooks/useCodeExec';
+import { useInfo } from 'hooks/useInfo';
+import { useInitAPIClient } from 'hooks/useInitAPIClient';
+import { useIsEmbedded } from 'hooks/useIsEmbedded';
+import { useQuery } from 'hooks/useQuery';
+import { useShallow } from 'zustand/react/shallow';
+import { useSnackBar } from 'components/SnackBar/useSnackBar';
+import { useSpec } from 'hooks/useSpec';
+import { useStore } from 'services/store';
 
 const Container = styled.div`
   width: 100vw;
@@ -50,14 +52,10 @@ export const MainRoute: React.FC = () => {
   useInitAPIClient();
 
   const specMap = useSpec();
-  const [code, setCode, spec, setSpec, apiKey, useWS] = useStore((s) => [
-    s.code,
-    s.setCode,
-    s.spec,
-    s.setSpec,
-    s.apiKey,
-    s.useWS,
-  ]);
+  const [code, setCode, spec, setSpec, apiKey, useWS] = useStore(
+    useShallow((s) => [s.code, s.setCode, s.spec, s.setSpec, s.apiKey, s.useWS])
+  );
+
   const [snippet, setSnippet] = useQuery('s');
   const { show } = useSnackBar();
   const { run, stop } = useCodeExec();

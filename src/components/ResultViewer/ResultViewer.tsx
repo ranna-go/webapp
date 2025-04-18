@@ -1,9 +1,9 @@
-import styled from 'styled-components';
-import { TransWithMuchEzCB } from 'styles/default';
-import { linebreak } from 'util/format';
 import { CloseButton } from './CloseButton';
-import { format } from 'date-fns';
 import { Result } from 'types/restapi';
+import { TransWithMuchEzCB } from 'styles/default';
+import { format } from 'date-fns';
+import { linebreak } from 'util/format';
+import styled from 'styled-components';
 
 interface Props {
   stdOut: string;
@@ -100,13 +100,17 @@ export const ResultViewer: React.FC<Props> = ({
         {stdOut && (
           <OutputContainer>
             <PartHeading>stdout</PartHeading>
-            <span>{linebreak(stdOut)}</span>
+            <span>
+              <>{linebreak(stdOut)}</>
+            </span>
           </OutputContainer>
         )}
         {stdErr && (
           <ErrContaienr>
             <PartHeading>stderr</PartHeading>
-            <span>{linebreak(stdErr)}</span>
+            <span>
+              <>{linebreak(stdErr)}</>
+            </span>
           </ErrContaienr>
         )}
         {from_cache && (

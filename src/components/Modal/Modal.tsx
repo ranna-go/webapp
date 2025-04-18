@@ -48,7 +48,11 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <Background id={BACKGROUND_ID} onMouseDown={_onBackgroundClick}>
       <Container>
-        {heading && <Heading>{heading}</Heading>}
+        {heading && (
+          <Heading>
+            <>{heading}</>
+          </Heading>
+        )}
         {children}
       </Container>
     </Background>

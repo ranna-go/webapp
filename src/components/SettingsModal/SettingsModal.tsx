@@ -1,13 +1,15 @@
-import { StringMap } from '@ranna-go/ranna-ts';
-import { Button } from 'components/Button';
-import { Input } from 'components/Input';
-import { CheckBox } from 'components/Input/CheckBox';
-import { TextBox } from 'components/Input/TextBox';
 import { Controls, Modal } from 'components/Modal';
-import { ThemeSwitch } from 'components/ThemeSwitch';
 import { useEffect, useState } from 'react';
-import { useStore } from 'services/store';
+
+import { Button } from 'components/Button';
+import { CheckBox } from 'components/Input/CheckBox';
+import { Input } from 'components/Input';
+import { StringMap } from '@ranna-go/ranna-ts';
+import { TextBox } from 'components/Input/TextBox';
+import { ThemeSwitch } from 'components/ThemeSwitch';
 import styled from 'styled-components';
+import { useShallow } from 'zustand/react/shallow';
+import { useStore } from 'services/store';
 
 interface Props {
   onClosing: () => void;
@@ -48,16 +50,18 @@ export const SettingsModal: React.FC<Props> = ({ onClosing }) => {
     setApiKey,
     env,
     setEnv,
-  ] = useStore((s) => [
-    s.args,
-    s.setArgs,
-    s.bypassCache,
-    s.setBypassCache,
-    s.apiKey,
-    s.setApiKey,
-    s.env,
-    s.setEnv,
-  ]);
+  ] = useStore(
+    useShallow((s) => [
+      s.args,
+      s.setArgs,
+      s.bypassCache,
+      s.setBypassCache,
+      s.apiKey,
+      s.setApiKey,
+      s.env,
+      s.setEnv,
+    ])
+  );
 
   const [envInpt, setEnvInpt] = useState('');
 

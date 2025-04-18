@@ -1,8 +1,8 @@
-import styled from 'styled-components';
 import { AppTheme } from 'theme/theme';
-import { ReactComponent as Sun } from 'assets/icons/sun.svg';
 import { ReactComponent as Moon } from 'assets/icons/moon.svg';
+import { ReactComponent as Sun } from 'assets/icons/sun.svg';
 import { Switch } from 'components/Switch';
+import styled from 'styled-components';
 import { useStore } from 'services/store';
 
 const StyledSwitch = styled(Switch)`
@@ -10,9 +10,12 @@ const StyledSwitch = styled(Switch)`
 `;
 
 export const ThemeSwitch: React.FC<{}> = () => {
-  const [theme, setTheme] = useStore((s) => [s.theme, s.setTheme]);
+  const theme = useStore((s) => s.theme);
+  const setTheme = useStore((s) => s.setTheme);
+
   const _onSwitch = (e: boolean) =>
     setTheme(e ? AppTheme.LIGHT : AppTheme.DARK);
+
   return (
     <StyledSwitch
       enabled={theme === AppTheme.LIGHT}

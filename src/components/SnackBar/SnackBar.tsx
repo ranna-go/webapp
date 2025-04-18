@@ -1,7 +1,8 @@
-import styled from 'styled-components';
-import { TransWithMuchEzCB } from 'styles/default';
 import { NotificationType, Props } from './types';
 import { useSnackBar, useSnackBarStore } from './useSnackBar';
+
+import { TransWithMuchEzCB } from 'styles/default';
+import styled from 'styled-components';
 
 const BACKGROUND_ID = ':snackbar_background';
 
@@ -63,7 +64,7 @@ export const SnackBar: React.FC = () => {
       id={BACKGROUND_ID}
     >
       <Notification active={active} {...props}>
-        {props.content}
+        <>{props.content}</>
       </Notification>
     </Container>
   );

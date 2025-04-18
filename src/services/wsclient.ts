@@ -34,19 +34,20 @@ export class RannaWSClient extends RannaHttpClient implements RannaClient {
       unreg.push(
         this.wsClient.onEvent(
           EventCode.SPAWN,
-          nonceFilter((e) => subscriber.next(e))
+          nonceFilter((e) => e && subscriber.next(e))
         )
       );
       unreg.push(
         this.wsClient.onEvent(
           EventCode.LOG,
-          nonceFilter((e) => subscriber.next(e))
+          nonceFilter((e) => e && subscriber.next(e))
         )
       );
       unreg.push(
         this.wsClient.onEvent(
           EventCode.STOP,
           nonceFilter((e) => {
+            if (!e) return;
             subscriber.next(e);
             subscriber.complete();
             unreg.forEach((f) => f());

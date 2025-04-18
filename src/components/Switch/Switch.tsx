@@ -64,8 +64,10 @@ export const Switch = React.forwardRef<HTMLButtonElement, Props>(
     return (
       <Container {...props} enabled={enabled} ref={ref} onClick={_onSwitch}>
         <Nob enabled={enabled}>
-          {_iconEnabled}
-          {_iconDisabled}
+          <>
+            {_iconEnabled}
+            {_iconDisabled}
+          </>
         </Nob>
       </Container>
     );

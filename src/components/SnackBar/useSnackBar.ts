@@ -1,7 +1,8 @@
-import { useRef } from 'react';
-import { Timeout } from 'types/timer';
-import create from 'zustand';
 import { NotificationType, Props } from './types';
+
+import { Timeout } from 'types/timer';
+import { create } from 'zustand';
+import { useRef } from 'react';
 
 interface Store {
   active: boolean;
@@ -21,7 +22,7 @@ export const useSnackBarStore = create<Store>((set) => ({
 
 export function useSnackBar() {
   const { setActive, setPorps } = useSnackBarStore();
-  const hideRef = useRef<Timeout | null>();
+  const hideRef = useRef<Timeout | null>(null);
 
   const _clearTimer = () => {
     if (hideRef.current) {

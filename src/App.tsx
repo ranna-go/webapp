@@ -1,6 +1,7 @@
-import { useStoredTheme } from 'hooks/useStoredTheme';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { ThemeProvider, createGlobalStyle } from 'styled-components';
+
 import { MainRoute } from './routes/Main';
+import { useStoredTheme } from 'hooks/useStoredTheme';
 
 const GlobalStyle = createGlobalStyle`
   body {
