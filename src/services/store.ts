@@ -34,8 +34,11 @@ export interface Store {
 }
 
 export const useStore = create<Store>((set, get) => ({
-  spec: '',
-  setSpec: (spec) => set({ spec }),
+  spec: LocalStorageUtil.get('ranna.spec', ''),
+  setSpec: (spec) => {
+    set({ spec });
+    LocalStorageUtil.set('ranna.spec', spec);
+  },
 
   code: '',
   setCode: (code) => set({ code }),
@@ -49,7 +52,7 @@ export const useStore = create<Store>((set, get) => ({
   bypassCache: false,
   setBypassCache: (bypassCache) => set({ bypassCache }),
 
-  apiKey: LocalStorageUtil.get('snippets.apiKey', '')!,
+  apiKey: LocalStorageUtil.get('snippets.apiKey', ''),
   setApiKey: (apiKey) => {
     set({ apiKey });
     LocalStorageUtil.set('snippets.apiKey', apiKey);

@@ -3,7 +3,9 @@ export default class LocalStorageUtil {
     window.localStorage.setItem(key, JSON.stringify(val));
   }
 
-  public static get<T>(key: string, def?: T): T | undefined {
+  public static get<T>(key: string): T | undefined;
+  public static get<T>(key: string, def: T): T;
+  public static get<T>(key: string, def?: T) {
     const valStr = window.localStorage.getItem(key);
     if (valStr) return this.parseSafe(valStr, def);
     return def;

@@ -1,6 +1,6 @@
 import MonacoEditor from '@monaco-editor/react';
-import { useStoredTheme } from 'hooks/useStoredTheme';
 import styled from 'styled-components';
+import { useStoredTheme } from 'hooks/useStoredTheme';
 
 interface Props {
   selectedLang: string;
@@ -36,7 +36,6 @@ export const Editor: React.FC<Props> = ({
         value={value}
         onChange={(v) => onChange(v!)}
         options={{
-          readOnly: readOnly,
           minimap: { enabled: false },
         }}
       />

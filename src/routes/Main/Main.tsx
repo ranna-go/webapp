@@ -109,10 +109,8 @@ export const MainRoute: React.FC = () => {
     if (
       specMap &&
       spec &&
-      (!code ||
-        Object.values(specMap).some(
-          (s) => s.example === code.replaceAll('\r\n', '\n')
-        ))
+      specMap[spec].example &&
+      (!code || specMap[spec].example === code.replaceAll('\r\n', '\n'))
     ) {
       setCode(specMap[spec].example);
     }
@@ -189,7 +187,7 @@ export const MainRoute: React.FC = () => {
         <Editor
           value={code}
           onChange={setCode}
-          selectedLang={specMap[spec]?.language ?? spec}
+          selectedLang={(specMap ?? {})[spec]?.language ?? spec}
           readOnly={isEmbedded}
         />
         <ResultViewer
