@@ -63,6 +63,7 @@ export const MainRoute: React.FC = () => {
   const isEmbedded = useIsEmbedded();
 
   const lastSnippetRef = useRef<string>('');
+  const dirty = useRef<boolean>(false);
   const [isRunning, setIsRunning] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [stdOut, setStdOut] = useState('');
@@ -106,12 +107,7 @@ export const MainRoute: React.FC = () => {
       setSpec(s);
     }
 
-    if (
-      specMap &&
-      spec &&
-      specMap[spec].example &&
-      (!code || specMap[spec].example === code.replaceAll('\r\n', '\n'))
-    ) {
+    if (!dirty.current && specMap && spec && specMap[spec].example) {
       setCode(specMap[spec].example);
     }
   }, [spec, specMap]);
@@ -168,6 +164,11 @@ export const MainRoute: React.FC = () => {
     } catch {}
   };
 
+  const _onEditorChange = (v: string) => {
+    dirty.current = !!v;
+    setCode(v);
+  };
+
   return (
     <Container>
       <Header
@@ -186,7 +187,7 @@ export const MainRoute: React.FC = () => {
       <EditorContainer>
         <Editor
           value={code}
-          onChange={setCode}
+          onChange={_onEditorChange}
           selectedLang={(specMap ?? {})[spec]?.language ?? spec}
           readOnly={isEmbedded}
         />
