@@ -76,6 +76,7 @@ export const MainRoute: React.FC = () => {
         .then((s) => {
           setCode(s.code);
           lastSnippetRef.current = s.code;
+          dirty.current = true;
           setSpec(s.language);
         })
         .catch((e) => {
@@ -107,7 +108,13 @@ export const MainRoute: React.FC = () => {
       setSpec(s);
     }
 
-    if (!dirty.current && specMap && spec && specMap[spec].example) {
+    if (
+      !dirty.current &&
+      !snippet &&
+      specMap &&
+      spec &&
+      specMap[spec].example
+    ) {
       setCode(specMap[spec].example);
     }
   }, [spec, specMap]);
