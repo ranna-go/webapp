@@ -137,7 +137,7 @@ export const MainRoute: React.FC = () => {
             {
               const data = e.data as LogData;
               if (data.stdout) setStdOut((v) => v + data.stdout);
-              if (data.stderr) setStdOut((v) => v + data.stderr);
+              if (data.stderr) setStdErr((v) => v + data.stderr);
             }
             break;
           case EventCode.STOP:
