@@ -1,4 +1,4 @@
-import { EventCode, LogData, Snippet } from '@ranna-go/ranna-ts';
+import { EventCode, LogData, Snippet } from 'ranna-ts';
 import { NotificationType, SnackBar } from 'components/SnackBar';
 import { useEffect, useRef, useState } from 'react';
 

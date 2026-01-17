@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { SpecMap } from '@ranna-go/ranna-ts';
+import { SpecMap } from 'ranna-ts';
 import { useStore } from 'services/store';
 
 export const useSpec = () => {

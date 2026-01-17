@@ -1,4 +1,4 @@
-import { SystemInfo } from '@ranna-go/ranna-ts/dist/models';
+import { SystemInfo } from 'ranna-ts/dist/models';
 
 export type InfoModel = SystemInfo & {
   rannaEndpoint: string;

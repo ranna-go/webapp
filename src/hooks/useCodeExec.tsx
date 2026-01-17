@@ -1,10 +1,4 @@
-import {
-  Event,
-  EventCode,
-  ExecutionRequest,
-  RunID,
-  WsError,
-} from '@ranna-go/ranna-ts';
+import { Event, EventCode, ExecutionRequest, RunID, WsError } from 'ranna-ts';
 import { catchError, filter, tap } from 'rxjs';
 
 import { NotificationType } from 'components/SnackBar';

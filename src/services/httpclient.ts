@@ -10,8 +10,8 @@ import {
   ResponseError,
   APIError,
   StopData,
-} from '@ranna-go/ranna-ts';
-import { SystemInfo } from '@ranna-go/ranna-ts/dist/models';
+} from 'ranna-ts';
+import { SystemInfo } from 'ranna-ts/dist/models';
 import { Observable } from 'rxjs';
 import { Result } from 'types/restapi';
 import { RannaClient } from './rannaclient';

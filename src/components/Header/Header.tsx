@@ -5,7 +5,7 @@ import { Option, Select } from 'components/Select';
 import { Button } from 'components/Button';
 import { ExecButton } from './ExecButton';
 import { ReactComponent as Logo } from 'assets/icons/logo.svg';
-import { SpecMap } from '@ranna-go/ranna-ts';
+import { SpecMap } from 'ranna-ts';
 import { Switch } from 'components/Switch';
 import { displayName } from 'util/spec';
 import styled from 'styled-components';
@@ -116,7 +116,7 @@ export const Header: React.FC<Props> = ({
         ({
           value: s,
           displayName: displayName(s, specMap[s]),
-        } as Option)
+        }) as Option
     );
 
   return (

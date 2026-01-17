@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button } from 'components/Button';
 import { CheckBox } from 'components/Input/CheckBox';
 import { Input } from 'components/Input';
-import { StringMap } from '@ranna-go/ranna-ts';
+import { StringMap } from 'ranna-ts';
 import { TextBox } from 'components/Input/TextBox';
 import { ThemeSwitch } from 'components/ThemeSwitch';
 import styled from 'styled-components';

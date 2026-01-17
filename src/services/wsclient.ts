@@ -4,7 +4,7 @@ import {
   ExecutionRequest,
   OpCode,
   WebSocketClient,
-} from '@ranna-go/ranna-ts';
+} from 'ranna-ts';
 import { Observable } from 'rxjs';
 import { Optional } from 'types/optional';
 import { RannaHttpClient } from './httpclient';

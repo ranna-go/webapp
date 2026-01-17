@@ -1,7 +1,7 @@
 import { AppTheme } from 'theme/theme';
 import LocalStorageUtil from 'util/localstorage';
 import { RannaClient } from './rannaclient';
-import { StringMap } from '@ranna-go/ranna-ts';
+import { StringMap } from 'ranna-ts';
 import { create } from 'zustand';
 import { newRannaClient } from './static';
 
